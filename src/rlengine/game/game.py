@@ -8,20 +8,23 @@ from src.rlengine.config import \
 
 
 class Game():
-    def __init__(self, sys_config):
-        self.sys_config
+    def __init__(
+        self,
+        sys_config,
+        rl_config,
+    ):
+        self.sys_config = sys_config
+        self.rl_config = rl_config
+
+        self.rm = rl_config['klass_resource_manager']()
+        self.im = rl_config['klass_input_manager']()
+        self.log = None
 
         self._init_time()
-        self._init_utils()
         self._init_screen()
         self._init_mouse()
         self._init_player()
         self._init_start_state()
-
-    def _init_utils(self):
-        self.im = None
-        self.rm = None
-        self.log = None
 
     def _init_time(self):
         self.clock = pygame.time.Clock()
@@ -76,15 +79,16 @@ class Game():
                 if event.type == pygame.QUIT:
                     pygame.display.quit()
                     sys.exit()
-            #   if event.type == pygame.KEYDOWN:
-            #       self.im.set_key_event(event.type, event.key)
-            #   if event.type == pygame.JOYBUTTONDOWN:
-            #       self.im.set_joy_button_event(event.type, event.button)
-            #   if event.type == pygame.MOUSEBUTTONDOWN:
-            #       self.im.set_mouse_event(event.type, event.button)
+
+                if event.type == pygame.KEYDOWN:
+                    self.im.set_key_event(event.type, event.key)
+                if event.type == pygame.JOYBUTTONDOWN:
+                    self.im.set_joy_button_event(event.type, event.button)
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    self.im.set_mouse_event(event.type, event.button)
 
             # let state handle input
-            # self.im.update()
+            self.im.update()
             # self.cur_state.input(self.im)
 
             keystate = pygame.key.get_pressed()
