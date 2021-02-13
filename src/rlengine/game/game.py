@@ -16,15 +16,17 @@ class Game():
         self.sys_config = sys_config
         self.rl_config = rl_config
 
-        self.rm = rl_config['klass_resource_manager']()
-        self.im = rl_config['klass_input_manager']()
-        self.log = None
-
         self._init_time()
-        self._init_screen()
+        self._init_utils()
+        self._init_screen()      
         self._init_mouse()
         self._init_player()
         self._init_start_state()
+
+    def _init_utils(self):
+        self.rm = self.rl_config['klass_resource_manager']()
+        self.im = self.rl_config['klass_input_manager']()
+        self.log = None
 
     def _init_time(self):
         self.clock = pygame.time.Clock()
@@ -50,8 +52,7 @@ class Game():
         self.mouse_x, self.mouse_y = (0, 0)
 
     def _init_start_state(self):
-        # self._set_cur_state(START_STATE(self)
-        pass
+        self._set_cur_state(self.rl_config['klass_init_state'](self))
 
     def _set_cur_state(self, state):
         self.cur_state = state
@@ -89,7 +90,7 @@ class Game():
 
             # let state handle input
             self.im.update()
-            # self.cur_state.input(self.im)
+            self.cur_state.input(self.im)
 
             keystate = pygame.key.get_pressed()
 
@@ -98,5 +99,5 @@ class Game():
                 pygame.display.quit()
                 sys.exit()
 
-            # self.cur_state.set_fps(self.clock.get_fps())
-            # self.cur_state.run_mainloop()
+            self.cur_state.set_fps(self.clock.get_fps())
+            self.cur_state.run_mainloop()

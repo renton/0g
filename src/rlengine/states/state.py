@@ -10,16 +10,20 @@ from src.rlengine.config import \
 class State():
     def __init__(self, game, prev_state=None):
         self.screen = game.screen
-        self.p1 = game.p1
+        #self.p1 = game.p1
         self.im = game.im
         self.rm = game.rm
-        self.log = game.log
+        #self.log = game.log
 
         self.ticks = 0
         self.show_logs = True
         self.show_expanded_logs = False
         self.set_prev_state(prev_state)
+
+        # fps
         self.fps = 0
+        self.display_fps = False
+
         self.bg_colour = GAME_CONFIGS['default_background_colour']
         self.widgets = []
 
@@ -64,8 +68,10 @@ class State():
 
     def _after_draw(self):
         self.draw_widgets()
-        self.draw_logs()
-        self.draw_fps()
+        # self.draw_logs()
+
+        if self.display_fps:
+            self.draw_fps()
         pygame.display.flip()
 
     # TODO logs have their own state -- since logs are global this should work?
@@ -100,6 +106,9 @@ class State():
         if self.im.is_key_event(KEYDOWN, K_ESCAPE):
             if self.prev_state:
                 self.close()
+
+        if self.im.is_key_event(KEYDOWN, K_F1):
+            self.display_fps = not self.display_fps
 
     def close(self):
         pygame.event.post(pygame.event.Event(EVENT_CUSTOM_SWITCH_STATE, loadstate=self.prev_state))

@@ -38,5 +38,13 @@ GAME_CONFIGS = {
     'default_background_colour': (0, 0, 0)
 }
 
+WIDGET_CONFIGS = {
+    'widget_list_line_spacing': 40,
+    'widget_default_menu_line_spacing': 40,
+    'widget_default_menu_bg_colour': (40, 40, 40),
+    'widget_default_menu_font': 0,
+    'widget_default_menu_font_colour': (255, 255, 255)
+}
+
 EVENT_CUSTOM_SWITCH_STATE = USEREVENT + 2
 EVENT_CUSTOM_CREATE_STATE = USEREVENT + 3

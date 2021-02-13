@@ -5,7 +5,7 @@ class Widget():
         self.y = y
 
     def get_select_event(self):
-        if select_event:
+        if self.select_event:
             return self.select_event()
         return False
 

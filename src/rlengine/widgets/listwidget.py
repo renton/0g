@@ -1,5 +1,5 @@
 from src.rlengine.widgets import Widget
-from config import CONFIG
+from src.rlengine.config import GAME_CONFIGS, WIDGET_CONFIGS
 
 
 class ListWidget(Widget):
@@ -15,11 +15,11 @@ class ListWidget(Widget):
 
     def draw(self, screen, rm):
         count = 0
-        for k,v in self.data.items():
-            text = rm.get_font(CONFIG['system_font_default']).render(str(k) + " : " + str(v), 1, CONFIG['system_font_colour'])
+        for k, v in self.data.items():
+            text = rm.get_font(GAME_CONFIGS['font_configs']['system_font_default']).render(str(k) + " : " + str(v), 1, GAME_CONFIGS['font_configs']['system_font_colour'])
             screen.blit(text, (
                                         self.x,
-                                        self.y + (CONFIG['widget_list_line_spacing'] * count),
+                                        self.y + (WIDGET_CONFIGS['widget_list_line_spacing'] * count),
                                     )
                             )
             count += 1

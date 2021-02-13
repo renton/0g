@@ -1,5 +1,5 @@
 from src.rlengine.widgets import MenuItemWidget, Widget
-from config import CONFIG
+from src.rlengine.config import WIDGET_CONFIGS
 
 
 class MenuWidget(Widget):
@@ -9,7 +9,7 @@ class MenuWidget(Widget):
         self.cur_target = 0
 
     def add_menu_item(self, label, select_event=None):
-        self.menu_items.append(MenuItemWidget(self.x, self.y + (CONFIG['widget_default_menu_line_spacing'] * len(self.menu_items)), label, select_event))
+        self.menu_items.append(MenuItemWidget(self.x, self.y + (WIDGET_CONFIGS['widget_default_menu_line_spacing'] * len(self.menu_items)), label, select_event))
 
     def draw(self, screen, rm):
         for menu_item in self.menu_items:
