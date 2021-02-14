@@ -4,8 +4,8 @@ from pygame.locals import *
 SYS_CONFIGS = {
     'default_fps': 60,
     'fullscreen_mode': False,
-    'window_x_size': 800,
-    'window_y_size': 600,
+    'window_x_size': 1280,
+    'window_y_size': 1024,
     'window_name': '0g',
     'tileset_path': 'assets/tilesets/',
     'fps_draw_x': 10,
@@ -13,8 +13,14 @@ SYS_CONFIGS = {
 }
 
 GAME_CONFIGS = {
+    'map_configs': {
+        'sample_map_x_size': 100,
+        'sample_map_y_size': 100,
+        'map_x': 0,
+        'map_y': 0,
+    },
     'tile_configs': {
-        'zoom_levels': 3,
+        'zoom_levels': (1, 2, 4),
         'tile_size': 16,
         'tilesets': {
             0: {
@@ -37,6 +43,12 @@ GAME_CONFIGS = {
     },
     'default_background_colour': (0, 0, 0)
 }
+
+GAME_CONFIGS['tile_configs']['min_zoom'] = 0
+GAME_CONFIGS['tile_configs']['max_zoom'] = len(GAME_CONFIGS['tile_configs']['zoom_levels'])-1
+
+GAME_CONFIGS['map_configs']['map_window_size_x'] = SYS_CONFIGS['window_x_size'] // GAME_CONFIGS['tile_configs']['tile_size']
+GAME_CONFIGS['map_configs']['map_window_size_y'] = SYS_CONFIGS['window_y_size'] // GAME_CONFIGS['tile_configs']['tile_size']
 
 WIDGET_CONFIGS = {
     'widget_list_line_spacing': 40,

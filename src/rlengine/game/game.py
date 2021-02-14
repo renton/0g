@@ -14,11 +14,11 @@ class Game():
         rl_config,
     ):
         self.sys_config = sys_config
-        self.rl_config = rl_config
+        self.rl_config = rl_config        
 
         self._init_time()
         self._init_utils()
-        self._init_screen()      
+        self._init_screen()
         self._init_mouse()
         self._init_player()
         self._init_start_state()
@@ -45,8 +45,7 @@ class Game():
         pygame.display.set_caption(self.sys_config['window_name'])
 
     def _init_player(self):
-        # self.p1 = rlconf.klass_player()
-        pass
+        self.player1 = self.rl_config['klass_player']()
 
     def _init_mouse(self):
         self.mouse_x, self.mouse_y = (0, 0)
@@ -63,6 +62,7 @@ class Game():
 
     def mainloop(self):
         while(1):
+
             # do not go faster than the framerate
             msec = self.clock.tick(self.fps)
             self.playtime += msec / 1000.0

@@ -1,4 +1,5 @@
-# from src.rlengine.player import Player
+from src.rlengine.game import Player
+from src.rlengine.game.map import Map, Tile
 # from src.rlengine.system import Logger
 from src.rlengine.utils import InputManager, ResourceManager
 from src.rlengine.custom.states import MainMenuState
@@ -11,5 +12,6 @@ from src.rlengine.custom.states import MainMenuState
 RL_CONFIGS = {
     'klass_resource_manager': ResourceManager,
     'klass_input_manager': InputManager,
-    'klass_init_state': MainMenuState
+    'klass_init_state': MainMenuState,
+    'klass_player': Player,
 }
