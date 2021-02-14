@@ -41,7 +41,7 @@ class Entity():
                 else:
                     setattr(self, k, getattr(self, k) + v)
 
-    def step(self, map):
+    def step(self):
         if self.active:
             if self.delay <= 0:
                 self.delay = self.max_delay

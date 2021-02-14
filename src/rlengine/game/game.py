@@ -14,7 +14,7 @@ class Game():
         rl_config,
     ):
         self.sys_config = sys_config
-        self.rl_config = rl_config        
+        self.rl_config = rl_config
 
         self._init_time()
         self._init_utils()
@@ -43,6 +43,9 @@ class Game():
             flags
         )
         pygame.display.set_caption(self.sys_config['window_name'])
+
+    def bind_player_entity(self, entity):
+        self.player1.bind_entity(entity)
 
     def _init_player(self):
         self.player1 = self.rl_config['klass_player']()

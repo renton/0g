@@ -9,6 +9,7 @@ from src.rlengine.config import \
 
 class State():
     def __init__(self, game, prev_state=None):
+        self.game = game
         self.screen = game.screen
         #self.p1 = game.p1
         self.im = game.im

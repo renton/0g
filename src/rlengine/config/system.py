@@ -14,8 +14,8 @@ SYS_CONFIGS = {
 
 GAME_CONFIGS = {
     'map_configs': {
-        'sample_map_x_size': 100,
-        'sample_map_y_size': 100,
+        'sample_map_x_size': 10,
+        'sample_map_y_size': 10,
         'map_x': 0,
         'map_y': 0,
     },
