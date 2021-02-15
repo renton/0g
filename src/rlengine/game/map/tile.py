@@ -5,12 +5,22 @@ class Tile():
         self.tile_data = tile_data
         self.entities = {}
 
-        self._load_tile_attributes()
+        self._load_data(self.tile_data)
 
-    def _load_tile_attributes(self):
-        self.tileset_id = self.tile_data['tileset_id']
-        self.tile_id = self.tile_data['tile_id']
-        self.block_colour = self.tile_data['block_colour']
+    def _load_data(self, dataset):
+        for k, v in dataset.items():
+            if hasattr(v, '__call__'):
+                setattr(self, k, v())
+            else:
+                setattr(self, k, v)
+
+    def _modify_data(self, dataset):
+        for k, v in dataset.items():
+            if hasattr(self, k):
+                if hasattr(v, '__call__'):
+                    setattr(self, k, getattr(self, k) + v())
+                else:
+                    setattr(self, k, getattr(self, k) + v)
 
     # def set_entity(self, e):
     #     self.entities[e.u_id] = e

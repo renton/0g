@@ -21,5 +21,12 @@ class MapEntity(Entity):
     def set_ai(self, ai):
         self.ai = ai
 
+    def set_xy(self, x, y):
+        self.x = x
+        self.y = y
+
+    def get_xy(self):
+        return (self.x, self.y)
+
     def step(self):
         Entity.step(self)

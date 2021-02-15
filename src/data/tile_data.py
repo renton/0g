@@ -15,7 +15,8 @@ TILE_DATA['gametiles'] = {
                                     'description': '',
                                     'tileset_id': 0,
                                     'tile_id': 3024,
-                                    'block_colour': None
+                                    'block_colour': None,
+                                    'is_walkable': False
                                 },
 
                             1: {
@@ -23,6 +24,7 @@ TILE_DATA['gametiles'] = {
                                     'description': '',
                                     'tileset_id': 0,
                                     'tile_id': 1069,
-                                    'block_colour': (10, 10, 60)
+                                    'block_colour': (10, 10, 60),
+                                    'is_walkable': True
                                 },
                             }

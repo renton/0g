@@ -15,9 +15,7 @@ class EntityRenderer():
             ey = (y) * GAME_CONFIGS['tile_configs']['zoom_levels'][zoom_level]
             camera_x = camera_x * self.get_zoomed_tile_size(zoom_level)
             camera_y = camera_y * self.get_zoomed_tile_size(zoom_level)
-            print('entity: ', x, y)
-            print('camera: ', camera_x, camera_y)
-            print('ex/ey: ', ex, ey)
+
             if self.block_mode:
                 pygame.draw.rect(
                     screen,
