@@ -19,6 +19,7 @@ class EntityMapState(MapState):
             (did_move, next_x, next_y) = entity.step()
             if did_move and self.can_entity_move(next_x, next_y, entity.w, entity.h):
                 entity.set_xy(next_x, next_y)
+            # TODO check entity-to-entity collision detection
 
     def _draw_entities(self):
         for entity in self.entities:

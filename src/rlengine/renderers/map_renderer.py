@@ -3,25 +3,37 @@ from src.rlengine.config import GAME_CONFIGS, SYS_CONFIGS
 
 
 class MapRenderer():
-    def __init__(self):
-        pass
+    def __init__(self, rm):
+        self.block_mode = False
+        self.rm = rm
 
     def _draw_tile(self, screen, tile, x, y, zoom_level):
-        # self.screen.blit(
-        #         self.rm.get_tile_by_id(tile.tileset_id, tile.tile_id, CONFIG['zoom_levels'][self.zoom_level]), (
-        #             x * self.get_zoomed_tile_size(),
-        #             y * self.get_zoomed_tile_size()))
-        if tile.block_colour is not None:
-            pygame.draw.rect(
-                screen,
-                tile.block_colour,
-                (
-                    x * self.get_zoomed_tile_size(zoom_level),
-                    y * self.get_zoomed_tile_size(zoom_level),
-                    self.get_zoomed_tile_size(zoom_level),
-                    self.get_zoomed_tile_size(zoom_level)
+        ex = x * self.get_zoomed_tile_size(zoom_level)
+        ey = y * self.get_zoomed_tile_size(zoom_level)
+        if self.block_mode:
+            if tile.block_colour is not None:
+                pygame.draw.rect(
+                    screen,
+                    tile.block_colour,
+                    (
+                        ex,
+                        ey,
+                        self.get_zoomed_tile_size(zoom_level),
+                        self.get_zoomed_tile_size(zoom_level)
+                    ),
+                    0
+                )
+        else:
+            screen.blit(
+                self.rm.get_tile_by_id(
+                    tile.tileset_id,
+                    tile.tile_id,
+                    GAME_CONFIGS['tile_configs']['zoom_levels'][zoom_level]
                 ),
-                0
+                (
+                    ex,
+                    ey,
+                )
             )
 
     def draw_map(self, screen, cur_map, camera_tile_x, camera_tile_y, zoom_level):

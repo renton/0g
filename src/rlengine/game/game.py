@@ -21,7 +21,11 @@ class Game():
         self._init_screen()
         self._init_mouse()
         self._init_player()
+        self._init_debug_states()
         self._init_start_state()
+
+    def _init_debug_states(self):
+        pass
 
     def _init_utils(self):
         self.rm = self.rl_config['klass_resource_manager']()

@@ -14,7 +14,7 @@ TILE_DATA['gametiles'] = {
                                     'name': 'default',
                                     'description': '',
                                     'tileset_id': 0,
-                                    'tile_id': 3024,
+                                    'tile_id': 1069,
                                     'block_colour': None,
                                     'is_walkable': False
                                 },
@@ -23,7 +23,7 @@ TILE_DATA['gametiles'] = {
                                     'name': 'stone wall 1',
                                     'description': '',
                                     'tileset_id': 0,
-                                    'tile_id': 1069,
+                                    'tile_id': 1405,
                                     'block_colour': (10, 10, 60),
                                     'is_walkable': True
                                 },

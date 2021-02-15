@@ -27,7 +27,7 @@ class MapState(State):
         # self.entity_renderer = EntityRenderer(self.screen, self.rm)
 
     def _set_map_renderer(self):
-        self.map_renderer = MapRenderer()
+        self.map_renderer = MapRenderer(self.game.rm)
 
     def set_map(self, newmap):
         self.cur_map = newmap

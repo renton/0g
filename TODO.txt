@@ -1,0 +1,8 @@
+- mouse cursor drawing
+- better rendering (only draw what is in view)
+- create game map
+- draw tile/sprites
+- colour constants
+- better config/constant naming/hierachy
+- tool tileset viewer
+- why is x/y swapped??

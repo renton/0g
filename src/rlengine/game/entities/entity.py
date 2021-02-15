@@ -6,16 +6,16 @@ class Entity():
         self.e_id = e_id
         self.u_id = uuid.uuid4().hex
 
-        self.tile_id        = 3024
-        self.tileset_id     = 0
+        self.tile_id = 3024
+        self.tileset_id = 0
 
-        self.active         = True
+        self.active = True
 
-        self.name           = ''
-        self.description    = ''
+        self.name = ''
+        self.description = ''
 
-        self.delay          = 2
-        self.max_delay      = self.delay
+        self.delay = 2
+        self.max_delay = self.delay
 
         if attr_data:
             self._load_data(attr_data)

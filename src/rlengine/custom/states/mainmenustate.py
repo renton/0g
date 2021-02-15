@@ -1,6 +1,6 @@
 import pygame
 
-from src.rlengine.states import MenuState, MapState
+from src.rlengine.states import MenuState
 
 from src.rlengine.config import EVENT_CUSTOM_CREATE_STATE
 from src.data import TILE_DATA

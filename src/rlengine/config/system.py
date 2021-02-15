@@ -10,6 +10,8 @@ SYS_CONFIGS = {
     'tileset_path': 'assets/tilesets/',
     'fps_draw_x': 10,
     'fps_draw_y': 10,
+    'tool_tileviewer_max_col_size': 16,
+    'tool_tileviewer_font_colour': (0, 0, 0)
 }
 
 GAME_CONFIGS = {
