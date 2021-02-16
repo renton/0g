@@ -9,22 +9,23 @@ TILE_DATA['tilesets'] = {
 }
 
 # TODO walkable, los etc. should be abstracted to a instance of tile
+# TODO handle None tile_id for no draw
 TILE_DATA['gametiles'] = {
                             0: {
                                     'name': 'default',
                                     'description': '',
                                     'tileset_id': 0,
-                                    'tile_id': 1069,
+                                    'tile_id': 1405,
                                     'block_colour': None,
-                                    'is_walkable': False
+                                    'is_walkable': True
                                 },
 
                             1: {
                                     'name': 'stone wall 1',
                                     'description': '',
                                     'tileset_id': 0,
-                                    'tile_id': 1405,
+                                    'tile_id': 1069,
                                     'block_colour': (10, 10, 60),
-                                    'is_walkable': True
+                                    'is_walkable': False
                                 },
                             }

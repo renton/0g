@@ -7,7 +7,7 @@ from src.rlengine.config import GAME_CONFIGS
 # map should not know what an entity is?
 class Map():
 
-    def __init__(self, tile_data, tile_klass, gen_sample=False):
+    def __init__(self, tile_data, tile_klass, gen_sample=False, map_data=False):
         self.tile_klass = tile_klass
         self.tile_data = tile_data
         self.tiles = []
@@ -15,6 +15,9 @@ class Map():
 
         if gen_sample:
             self._gen_sample()
+        else:
+            if map_data:
+                self._gen_map(map_data)
 
     def build_tile(self, id):
         return self.tile_klass(self.get_tile_data(id))
@@ -24,6 +27,16 @@ class Map():
             return self.tile_data['gametiles'][id]
         else:
             return self.tile_data['gametiles'][0]
+
+    def _gen_map(self, map_data):
+        for i in range(len(map_data)):
+            self.tiles.append([])
+            for j in map_data[i]:
+                self.tiles[i].append(self.build_tile(j))
+
+        # TODO irregular shapes
+        self.size_x = len(self.tiles)
+        self.size_y = len(self.tiles[0])
 
     def _gen_sample(self):
         for i in range(GAME_CONFIGS['map_configs']['sample_map_x_size']):

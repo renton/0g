@@ -3,7 +3,7 @@ import pygame
 from src.rlengine.states import MenuState
 
 from src.rlengine.config import EVENT_CUSTOM_CREATE_STATE
-from src.data import TILE_DATA
+from src.data import TILE_DATA, MAP_DATA
 from src.rlengine.game.map import Map, Tile
 
 from .zerog_mapstate import ZeroGMapState
@@ -24,7 +24,7 @@ class MainMenuState(MenuState):
 
     def exec_new_game(self):
         # TODO custom should be easier to use
-        new_map = Map(TILE_DATA, Tile, gen_sample=True)
+        new_map = Map(TILE_DATA, Tile, gen_sample=False, map_data=MAP_DATA[0])
         pygame.event.post(pygame.event.Event(EVENT_CUSTOM_CREATE_STATE, createstate=lambda game: ZeroGMapState(game, new_map)))
 
     def exec_exit_game(self):

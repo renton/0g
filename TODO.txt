@@ -4,5 +4,9 @@
 - draw tile/sprites
 - colour constants
 - better config/constant naming/hierachy
-- tool tileset viewer
+- tool tileset viewer - tiles not loading correct number
 - why is x/y swapped??
+- load map from file
+- trig for mouse movement
+- reduce imports (can use configs from game instance?)
+- float entity CCD

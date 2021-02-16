@@ -14,6 +14,9 @@ class MapFloatEntity(MapEntity):
 
         MapEntity.__init__(self, e_id, cur_map, x, y, attr_data)
 
+    def hit_wall(self):
+        pass
+
     def step(self):
         MapEntity.step(self)
         next_x = self.x + self.ddx

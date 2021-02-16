@@ -23,7 +23,7 @@ GAME_CONFIGS = {
     },
     'tile_configs': {
         'zoom_levels': (1, 2, 4),
-        'tile_size': 16,
+        'tile_size': 32,
         'tilesets': {
             0: {
                 'name': '',

@@ -4,7 +4,7 @@ from src.rlengine.config import GAME_CONFIGS, SYS_CONFIGS
 
 class MapRenderer():
     def __init__(self, rm):
-        self.block_mode = False
+        self.block_mode = True
         self.rm = rm
 
     def _draw_tile(self, screen, tile, x, y, zoom_level):

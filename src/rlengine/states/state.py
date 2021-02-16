@@ -1,14 +1,17 @@
 import pygame
 from pygame.locals import *
 
+from src.rlengine.renderers import MouseRenderer
 from src.rlengine.config import \
     GAME_CONFIGS, \
     SYS_CONFIGS, \
     EVENT_CUSTOM_SWITCH_STATE
 
 
+# TODO pass dynamic mouse_renderer class for custom mouse
 class State():
     def __init__(self, game, prev_state=None):
+        self.mouse_renderer = MouseRenderer()
         self.game = game
         self.screen = game.screen
         #self.p1 = game.p1
@@ -73,6 +76,9 @@ class State():
 
         if self.display_fps:
             self.draw_fps()
+
+        self.mouse_renderer.draw_mouse(self.screen, self.game.mouse_x, self.game.mouse_y)
+
         pygame.display.flip()
 
     # TODO logs have their own state -- since logs are global this should work?

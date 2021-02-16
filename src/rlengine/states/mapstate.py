@@ -65,6 +65,31 @@ class MapState(State):
     def _set_camera(self, x, y):
         self.camera_tile_x, self.camera_tile_y = (x, y)
 
+    def mouse_to_tile(self):
+        pass
+
+    # TODO hate this math
+    def mouse_to_map_coords(self):
+        print(self.zoom_level)
+        mouse_x = self.game.mouse_x / GAME_CONFIGS['tile_configs']['zoom_levels'][self.zoom_level]
+        mouse_y = self.game.mouse_y / GAME_CONFIGS['tile_configs']['zoom_levels'][self.zoom_level]
+        camera_x = self.camera_tile_x * self.get_zoomed_tile_size()
+        camera_y = self.camera_tile_y * self.get_zoomed_tile_size()
+        return (
+            (mouse_x + camera_x),
+            (mouse_y + camera_y)
+        )
+
+    def get_zoomed_tile_size(self):
+        return (
+            GAME_CONFIGS['tile_configs']['tile_size'] * GAME_CONFIGS['tile_configs']['zoom_levels'][self.zoom_level]
+        )
+
+    def get_tile_at_coords(self, x, y):
+        tile_x = int(x / GAME_CONFIGS['tile_configs']['tile_size'])
+        tile_y = int(y / GAME_CONFIGS['tile_configs']['tile_size'])
+        return self.cur_map.tiles[tile_x][tile_y]
+
     def input(self, im):
         # TODO why is this needed?
         keystate = pygame.key.get_pressed()

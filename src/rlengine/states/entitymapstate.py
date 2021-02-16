@@ -17,9 +17,28 @@ class EntityMapState(MapState):
     def _step_entities(self):
         for entity in self.entities:
             (did_move, next_x, next_y) = entity.step()
-            if did_move and self.can_entity_move(next_x, next_y, entity.w, entity.h):
-                entity.set_xy(next_x, next_y)
+            if did_move:
+                if self.can_entity_move(next_x, next_y, entity.w, entity.h):
+                    new_x = next_x
+                    new_y = next_y
+                else:
+                    # CCD TODO
+                    if entity.ddx + entity.ddy > 0:
+                        ddx_test = entity.ddx / (entity.ddx + entity.ddy)
+                        ddy_test = entity.ddy / (entity.ddx + entity.ddy)
+                        x_test, y_text = entity.get_xy()
+
+
+                    # TODO make x,y equal vectors of length 1 then check each step
+                    # TODO get as close as you can for CCD
+                    new_x, new_y = entity.get_xy()
+                    # TODO bool for top,left,down right?
+                    entity.hit_wall()
+
+                entity.set_xy(new_x, new_y)
             # TODO check entity-to-entity collision detection
+            # TODO CCD
+            # TODO objects greater w+h than 1 tile
 
     def _draw_entities(self):
         for entity in self.entities:
@@ -49,11 +68,6 @@ class EntityMapState(MapState):
                 return False
 
         return True
-
-    def get_tile_at_coords(self, x, y):
-        tile_x = int(x / GAME_CONFIGS['tile_configs']['tile_size'])
-        tile_y = int(y / GAME_CONFIGS['tile_configs']['tile_size'])
-        return self.cur_map.tiles[tile_x][tile_y]
 
     def add_entity_to_map(self, entity):
         self.entities.append(entity)
