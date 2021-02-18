@@ -67,6 +67,9 @@ class Game():
     def _evoke_new_state(self, state):
         self._set_cur_state(state(self))
 
+    def _set_mouse_coords(self):
+        self.mouse_x, self.mouse_y = pygame.mouse.get_pos()
+
     def mainloop(self):
         while(1):
 
@@ -76,7 +79,9 @@ class Game():
 
             # reset im key events
             self.im.reset_events()
-            self.mouse_x, self.mouse_y = pygame.mouse.get_pos()
+
+            # set mouse coords
+            self._set_mouse_coords()
 
             # handle events
             for event in pygame.event.get():

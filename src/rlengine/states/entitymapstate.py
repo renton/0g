@@ -16,7 +16,7 @@ class EntityMapState(MapState):
 
     def _step_entities(self):
         for entity in self.entities:
-            (did_move, next_x, next_y) = entity.step()
+            (did_move, next_x, next_y) = entity.calculate_step()
             if did_move:
                 if self.can_entity_move(next_x, next_y, entity.w, entity.h):
                     new_x = next_x
@@ -35,7 +35,7 @@ class EntityMapState(MapState):
                     # TODO bool for top,left,down right?
                     entity.hit_wall()
 
-                entity.set_xy(new_x, new_y)
+                entity.step(new_x, new_y)
             # TODO check entity-to-entity collision detection
             # TODO CCD
             # TODO objects greater w+h than 1 tile

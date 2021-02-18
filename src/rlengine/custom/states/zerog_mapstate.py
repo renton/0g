@@ -46,8 +46,13 @@ class ZeroGMapState(EntityMapState):
             self.add_entity_to_map(Projectile(self.cur_map, mouse_map_x, mouse_map_y))
 
         if self.im.is_lmouse_pressed():
-            mouse_map_x, mouse_map_y = self.mouse_to_map_coords()
-            self.player.e.action_launch(mouse_map_x, mouse_map_y)
+            self.player.e.action_launch(self.game.mouse_map_x, self.game.mouse_map_y)
+
+        if self.im.is_cmouse_pressed():
+            print('---')
+            print('screen ', self.game.mouse_x, self.game.mouse_y)
+            print('map ', self.game.mouse_map_x, self.game.mouse_map_y)
+            self.player.e.action_launch(self.game.mouse_map_x, self.game.mouse_map_y)
 
         EntityMapState.input(self, im)
 

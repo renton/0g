@@ -2,6 +2,7 @@ from pygame.constants import K_x
 from .map_entity import MapEntity
 
 from src.rlengine.config import GAME_CONFIGS
+# TODO should this be a mixin?
 
 
 class MapGridEntity(MapEntity):
@@ -15,7 +16,7 @@ class MapGridEntity(MapEntity):
         self.move_tile_x = 0
         self.move_tile_y = 0
 
-    def step(self):
+    def calculate_step(self):
         MapEntity.step(self)
         if self.move_tile_x == 0 and self.move_tile_y == 0:
             (next_x, next_y) = self.get_xy()
@@ -30,6 +31,9 @@ class MapGridEntity(MapEntity):
 
         self._reset_move()
         return (did_move, next_x, next_y)
+
+    def step(self, next_x, next_y):
+        self.set_xy(next_x, next_y)
 
     def _reset_move(self):
         self.move_tile_x = 0

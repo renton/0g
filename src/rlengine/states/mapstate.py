@@ -69,12 +69,12 @@ class MapState(State):
         pass
 
     # TODO hate this math
+    # TODO should we do this every frame? maybe expensive
     def mouse_to_map_coords(self):
-        print(self.zoom_level)
         mouse_x = self.game.mouse_x / GAME_CONFIGS['tile_configs']['zoom_levels'][self.zoom_level]
         mouse_y = self.game.mouse_y / GAME_CONFIGS['tile_configs']['zoom_levels'][self.zoom_level]
-        camera_x = self.camera_tile_x * self.get_zoomed_tile_size()
-        camera_y = self.camera_tile_y * self.get_zoomed_tile_size()
+        camera_x = (self.camera_tile_x * GAME_CONFIGS['tile_configs']['tile_size'])
+        camera_y = (self.camera_tile_y * GAME_CONFIGS['tile_configs']['tile_size'])
         return (
             (mouse_x + camera_x),
             (mouse_y + camera_y)
@@ -90,9 +90,14 @@ class MapState(State):
         tile_y = int(y / GAME_CONFIGS['tile_configs']['tile_size'])
         return self.cur_map.tiles[tile_x][tile_y]
 
+    def _set_mouse_map_coords(self):
+        self.game.mouse_map_x, self.game.mouse_map_y = self.mouse_to_map_coords()
+
     def input(self, im):
         # TODO why is this needed?
         keystate = pygame.key.get_pressed()
+
+        self._set_mouse_map_coords()
 
         # TODO camera should be able to pan to blackness at any zoom level
         if self.im.is_key_event(KEYDOWN, K_w) or keystate[K_w]:

@@ -28,9 +28,6 @@ class Hero(MapFloatEntity):
     def _launch(self, dest_x, dest_y, speed):
         orig_x, orig_y = self.get_xy()
 
-        print('orig ', orig_x, orig_y)
-        print('dest ', dest_x, dest_y)
-
         adj_large = dest_x - orig_x
         opp_large = dest_y - orig_y
         hyp_large = math.sqrt(math.pow(opp_large, 2) + math.pow(adj_large, 2))
@@ -41,3 +38,4 @@ class Hero(MapFloatEntity):
         else:
             self.set_ddx((adj_large/hyp_large) * speed)
             self.set_ddy((opp_large/hyp_large) * speed)
+        print('ddx, ddy : ', self.ddx, self.ddy)

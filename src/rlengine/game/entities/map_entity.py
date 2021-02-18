@@ -1,5 +1,6 @@
 from .entity import Entity
 # TODO sprite might need it's own class
+# TODO should be a mixin with no inherited class?
 
 
 class MapEntity(Entity):
