@@ -3,7 +3,7 @@
 class Tile():
     def __init__(self, tile_data):
         self.tile_data = tile_data
-        self.entities = {}
+        # self.entities = {}
 
         self._load_data(self.tile_data)
 

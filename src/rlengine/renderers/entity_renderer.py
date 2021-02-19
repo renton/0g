@@ -8,7 +8,7 @@ class EntityRenderer():
 
     # TODO function to resolve camera shit so we don't have to think about it
     # TODO only draw entities in frame
-    def draw_entity(self, screen, sprites_to_draw, camera_x, camera_y, x, y, w, h, zoom_level):
+    def draw_entity(self, screen, block_colour, sprites_to_draw, camera_x, camera_y, x, y, w, h, zoom_level):
 
         for sprite in sprites_to_draw:
             ex = (x) * GAME_CONFIGS['tile_configs']['zoom_levels'][zoom_level]
@@ -19,7 +19,7 @@ class EntityRenderer():
             if self.block_mode:
                 pygame.draw.rect(
                     screen,
-                    (200, 30, 30),
+                    block_colour,
                     (
                         ex - camera_x,
                         ey - camera_y,

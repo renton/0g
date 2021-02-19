@@ -8,12 +8,11 @@ class MapFloatEntity(MapEntity):
         self.ddx = 0.0
         self.ddy = 0.0
 
-        self.h = 10
-        self.w = 10
-
         self.snap_to_grid = False
 
         MapEntity.__init__(self, e_id, cur_map, x, y, attr_data)
+        self.h = 10
+        self.w = 10
 
     def hit_wall(self):
         pass

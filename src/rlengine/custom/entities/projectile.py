@@ -3,7 +3,7 @@ from src.rlengine.game.entities import MapFloatEntity
 
 class Projectile(MapFloatEntity):
     def __init__(self, cur_map, x, y):
-        MapFloatEntity.__init__(self, 0, cur_map, x, y, {})
+        MapFloatEntity.__init__(self, 1, cur_map, x, y, {})
         self.x = x
         self.y = y
         self.ddx = 0.7

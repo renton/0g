@@ -38,4 +38,3 @@ class Hero(MapFloatEntity):
         else:
             self.set_ddx((adj_large/hyp_large) * speed)
             self.set_ddy((opp_large/hyp_large) * speed)
-        print('ddx, ddy : ', self.ddx, self.ddy)
