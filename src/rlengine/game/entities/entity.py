@@ -1,4 +1,4 @@
-import uuid
+import uuid, time
 
 
 class Entity():
@@ -9,16 +9,23 @@ class Entity():
         self.tile_id = 3024
         self.tileset_id = 0
 
-        self.active = True
+        self.is_active = True
 
         self.name = ''
         self.description = ''
 
+        # TODO should get called in a set_active fn
+        self.spawn_time = time.time()
+
         self.delay = 2
         self.max_delay = self.delay
+        self.life_steps = 0
 
         if attr_data:
             self._load_data(attr_data)
+
+    def get_lifespan(self):
+        return self.life_steps
 
     def get_tiles_to_draw(self):
         return [self._generate_base_tile()]
@@ -42,11 +49,12 @@ class Entity():
                     setattr(self, k, getattr(self, k) + v)
 
     def step(self):
-        if self.active:
+        if self.is_active:
             if self.delay <= 0:
                 self.delay = self.max_delay
             else:
                 self.delay -= 1
+            self.life_steps += 1
 
     def print_stats(self):
         for attr in dir(self):

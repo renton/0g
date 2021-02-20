@@ -41,15 +41,20 @@ class EntityManager():
             if group_id in self.entity_collision_groups:
                 self.step_collision_group(group_id)
 
+    # TODO support for all (cicle->circle, rect->circle, rect->rect) collisions
     def step_collision_group(self, group_id):
         for collision_group in self.entity_collision_groups[group_id]:
             for collision_group_id in collision_group['collision_group_ids']:
                 for first_collision_entity in self.entity_groups[group_id]:
-                    first_entity_rect = first_collision_entity.get_rect()
-                    for second_collision_entity in self.entity_groups[collision_group_id]:
-                        second_entity_rect = second_collision_entity.get_rect()                        
-                        if first_entity_rect.colliderect(second_entity_rect):
-                            collision_group['collision_fn'](first_collision_entity, second_collision_entity)
+                    # TODO this should be handled in state deletion of is_active False
+                    if first_collision_entity.is_active:
+                        first_entity_rect = first_collision_entity.get_hitbox()
+                        for second_collision_entity in self.entity_groups[collision_group_id]:
+                            # TODO this should be handled in state deletion of is_active False
+                            if second_collision_entity.is_active:
+                                second_entity_rect = second_collision_entity.get_hitbox()                   
+                                if first_entity_rect.colliderect(second_entity_rect):
+                                    collision_group['collision_fn'](first_collision_entity, second_collision_entity)
 
     def add_entity_to_group(self, entity, group_id):
         self.entity_groups[group_id].append(entity)

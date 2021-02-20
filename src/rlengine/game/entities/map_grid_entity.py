@@ -10,7 +10,6 @@ class MapGridEntity(MapEntity):
         MapEntity.__init__(self, e_id, cur_map, x, y, attr_data)
         self.tile_x = 1
         self.tile_y = 1
-        self.snap_to_grid = True
         self.w = self.h = GAME_CONFIGS['tile_configs']['tile_size']
 
         self.move_tile_x = 0

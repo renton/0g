@@ -1,14 +1,14 @@
-from pygame.constants import K_x
 from .map_entity import MapEntity
 
 # TODO should this be a mixin?
+
 
 class MapFloatEntity(MapEntity):
     def __init__(self, e_id, cur_map, x, y, attr_data=None):
         self.ddx = 0.0
         self.ddy = 0.0
 
-        self.snap_to_grid = False
+        self.ignore_walls = False
 
         MapEntity.__init__(self, e_id, cur_map, x, y, attr_data)
         self.h = 10
@@ -18,7 +18,6 @@ class MapFloatEntity(MapEntity):
         pass
 
     def calculate_step(self):
-        MapEntity.step(self)
         next_x = self.x + self.ddx
         next_y = self.y + self.ddy
 
@@ -26,6 +25,7 @@ class MapFloatEntity(MapEntity):
         return (did_move, next_x, next_y)
 
     def step(self, next_x, next_y):
+        MapEntity.step(self)
         self.set_xy(next_x, next_y)
 
     def set_ddx(self, ddx):
