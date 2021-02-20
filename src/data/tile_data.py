@@ -5,7 +5,31 @@ TILE_DATA['tilesets'] = {
                 'name': '',
                 'filename': 'DungeonCrawl_ProjectUtumnoTileset.png',
                 'colorkey': (0, 0, 0),
+                'tile_width': 32,
+                'tile_height': 32,
             },
+        1: {
+                'name': 'Robo Static',
+                'filename': 'RoboStatic.png',
+                'colorkey': (0, 0, 0),
+                'tile_width': 32,
+                'tile_height': 64,
+            },
+}
+
+SPRITE_DATA = {
+    0: {
+        'name': 'robo_static_1',
+        'tileset_id': 1,
+        'tile_id': 0,
+        'block_colour': None
+    },
+    1: {
+        'name': 'robo_static_2',
+        'tileset_id': 1,
+        'tile_id': 0,
+        'block_colour': None
+    },
 }
 
 # TODO walkable, los etc. should be abstracted to a instance of tile
@@ -28,4 +52,4 @@ TILE_DATA['gametiles'] = {
                                     'block_colour': (10, 10, 60),
                                     'is_walkable': False
                                 },
-                            }
+                        }

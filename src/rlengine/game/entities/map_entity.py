@@ -15,6 +15,10 @@ class MapEntity(Entity):
         self.w = 0
         self.h = 0
 
+        # come from animations
+        self.tile_id = 0
+        self.tileset_id = 0
+
         self.is_visible = True
         self.is_active = True
 
@@ -26,8 +30,12 @@ class MapEntity(Entity):
     def get_sprites_to_draw(self):
         return [self._generate_base_tile()]
 
+    def _get_current_sprite(self):
+        return (self.tile_id, self.tileset_id)
+
     def _generate_base_tile(self):
-        return ('sprite', self.tileset_id, self.tile_id)
+        tile_id, tileset_id = self._get_current_sprite()
+        return ('sprite', tile_id, tileset_id)
 
     def set_ai(self, ai):
         self.ai = ai

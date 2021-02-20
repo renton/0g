@@ -4,3 +4,4 @@ from .map_float_entity import MapFloatEntity
 from .map_grid_entity import MapGridEntity
 from .entity_manager import EntityManager
 from .effect import Effect
+from .animated_map_float_entity import AnimatedMapFloatEntity

@@ -1,11 +1,11 @@
 - better rendering (only draw what is in view)
-- create game map
 - colour constants
 - better config/constant naming/hierachy
 - tool tileset viewer - tiles not loading correct number
-- why is x/y swapped??
 - load map from file
-- trig for mouse movement
 - reduce imports (can use configs from game instance?)
 - float entity CCD
 - MapEntity should be a mixin, so a custom entity might inherit from Entity and MapEntity
+- Tile/Sprite better organizing
+- animated mixin
+- entity state managment (logic not animation/sprite)

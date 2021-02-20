@@ -18,7 +18,7 @@ class MapState(State):
         State.__init__(self, game)
 
         self._set_camera(0, 0)
-        self.zoom_level = GAME_CONFIGS['tile_configs']['zoom_levels'][0]
+        self.zoom_level = 0
         self.fixed_camera = True
         self.camera_target = None
         self._set_map_renderer()

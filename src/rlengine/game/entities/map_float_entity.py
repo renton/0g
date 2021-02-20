@@ -14,8 +14,12 @@ class MapFloatEntity(MapEntity):
         self.h = 10
         self.w = 10
 
-    def hit_wall(self):
+    def hit_wall(self, walls_hit):
         pass
+
+    def get_center_point(self):
+        x, y = self.get_xy()
+        return (x + (self.w/2), y + (self.h/2))
 
     def calculate_step(self):
         next_x = self.x + self.ddx

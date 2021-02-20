@@ -25,10 +25,11 @@ class ResourceManager():
 
     def _load_tileset(
         self,
-        tileset,
-        width=GAME_CONFIGS['tile_configs']['tile_size'],
-        height=GAME_CONFIGS['tile_configs']['tile_size']
+        tileset
     ):
+        width = tileset['tile_width']
+        height = tileset['tile_height']
+
         if tileset['filename'] in self.tilesets:
             return
 

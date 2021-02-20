@@ -1,0 +1,4 @@
+RL_TOP = 0
+RL_RIGHT = 1
+RL_BOTTOM = 2
+RL_LEFT = 3

@@ -1,9 +1,9 @@
 import time, pygame
 from src.rlengine.game.entities import Effect
 
-SHOCKWAVE_SPEED = 12
-SHOCKWAVE_LIFESPAN_SMALL = 10
-SHOCKWAVE_LIFESPAN_LARGE = 20
+SHOCKWAVE_SPEED = 16
+SHOCKWAVE_LIFESPAN_SMALL = 20
+SHOCKWAVE_LIFESPAN_LARGE = 30
 
 
 class Shockwave(Effect):
@@ -18,12 +18,10 @@ class Shockwave(Effect):
         self.ddy = 0
         self.is_large = is_large
 
-    def get_hitbox(self):
-        x, y = self.get_xy()
-        return pygame.Rect(x-(self.w/2), y-(self.h/2), self.w, self.h)
-
     def step(self, next_x, next_y):
         Effect.step(self, next_x, next_y)
         
+        self.x -= SHOCKWAVE_SPEED / 2
+        self.y -= SHOCKWAVE_SPEED / 2
         self.w += SHOCKWAVE_SPEED
         self.h += SHOCKWAVE_SPEED

@@ -6,9 +6,6 @@ class Entity():
         self.e_id = e_id
         self.u_id = uuid.uuid4().hex
 
-        self.tile_id = 3024
-        self.tileset_id = 0
-
         self.is_active = True
 
         self.name = ''
