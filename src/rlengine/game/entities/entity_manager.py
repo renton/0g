@@ -1,4 +1,5 @@
 from collections import defaultdict
+import src.rlengine.utils.algos.collision as rl_collision
 
 
 class EntityManager():
@@ -48,12 +49,12 @@ class EntityManager():
                 for first_collision_entity in self.entity_groups[group_id]:
                     # TODO this should be handled in state deletion of is_active False
                     if first_collision_entity.is_active:
-                        first_entity_rect = first_collision_entity.get_hitbox()
+                        e1_hb_x, e1_hb_y, e1_r  = first_collision_entity.get_hitbox()
                         for second_collision_entity in self.entity_groups[collision_group_id]:
                             # TODO this should be handled in state deletion of is_active False
                             if second_collision_entity.is_active:
-                                second_entity_rect = second_collision_entity.get_hitbox()                   
-                                if first_entity_rect.colliderect(second_entity_rect):
+                                e2_hb_x, e2_hb_y, e2_r = second_collision_entity.get_hitbox()                   
+                                if rl_collision.collide_circle_to_circle(e1_hb_x, e1_hb_y, e1_r, e2_hb_x, e2_hb_y, e2_r):
                                     collision_group['collision_fn'](first_collision_entity, second_collision_entity)
 
     def add_entity_to_group(self, entity, group_id):

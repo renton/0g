@@ -10,22 +10,21 @@ class EntityRenderer():
         self.rm = rm
 
     def draw_entity_hitbox(self, screen, entity, camera_x, camera_y, zoom_level):
-        hitbox = entity.get_hitbox()
+        x, y, radius = entity.get_circle()
 
-        ex = (hitbox.x) * GAME_CONFIGS['tile_configs']['zoom_levels'][zoom_level]
-        ey = (hitbox.y) * GAME_CONFIGS['tile_configs']['zoom_levels'][zoom_level]
-        camera_x = camera_x * self.get_zoomed_tile_size(zoom_level)
-        camera_y = camera_y * self.get_zoomed_tile_size(zoom_level)
+        ex = (x) * GAME_CONFIGS['tile_configs']['zoom_levels'][zoom_level]
+        ey = (y) * GAME_CONFIGS['tile_configs']['zoom_levels'][zoom_level]
+        ecamera_x = camera_x * self.get_zoomed_tile_size(zoom_level)
+        ecamera_y = camera_y * self.get_zoomed_tile_size(zoom_level)
 
-        pygame.draw.rect(
+        pygame.draw.circle(
             screen,
             (255, 0, 0),
             (
-                ex - camera_x,
-                ey - camera_y,
-                hitbox.w * GAME_CONFIGS['tile_configs']['zoom_levels'][zoom_level],
-                hitbox.h * GAME_CONFIGS['tile_configs']['zoom_levels'][zoom_level],
+                ex - ecamera_x,
+                ey - ecamera_y,
             ),
+            radius * GAME_CONFIGS['tile_configs']['zoom_levels'][zoom_level],
             0
         )
 

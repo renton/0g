@@ -9,6 +9,7 @@ from src.rlengine.states import EntityMapState
 from src.rlengine.config import GAME_CONFIGS
 from src.rlengine.renderers import MapRenderer
 from src.rlengine.custom.entities import Hero, Projectile, Shockwave
+from src.rlengine.custom.entities.hero import STATE_START, STATE_LAND, STATE_JUMP1, STATE_JUMP2
 
 START_CAMERA_X = -6
 START_CAMERA_Y = -4
@@ -18,20 +19,20 @@ ENTITY_GROUP_PROJECTILES = 'PROJS'
 ENTITY_GROUP_EFFECTS = 'EFFECTS'
 
 
-def hero_proj_collision(entity1, entity2):
-    if not entity2.fading_in:
-        entity2.is_colliding = True
-        entity1.is_active = False
+def hero_proj_collision(hero, proj):
+    if not proj.fading_in:
+        proj.is_colliding = True
+        hero.take_hit()
 
 
-def shockwave_proj_collision(entity1, entity2):
-    if not entity2.fading_in:
-        entity2.is_colliding = True
-        orig_x, orig_y = entity1.get_center_point()
-        dest_x, dest_y = entity2.get_center_point()
+def shockwave_proj_collision(wave, proj):
+    if not proj.fading_in:
+        proj.is_colliding = True
+        orig_x, orig_y = wave.get_center_point()
+        dest_x, dest_y = proj.get_center_point()
         nx, ny = rl_math.get_normalized_vector(orig_x, orig_y, dest_x, dest_y)
-        entity2.ddx = nx * 8
-        entity2.ddy = ny * 8
+        proj.ddx = nx * 8
+        proj.ddy = ny * 8
 
 
 # TODO step override to plant projectiles
@@ -62,25 +63,22 @@ class ZeroGMapState(EntityMapState):
 
     def _step_entities(self):
         EntityMapState._step_entities(self)
-        if self.player.e.just_hit_wall:
+        if self.player.e.just_entered_state_id(STATE_LAND):
             self.score += 1
-            print(self.score)
+            print('score: ', self.score)
             x, y = self.player.e.get_xy()
             self.add_entity_to_map(
                 Shockwave(
                     self.cur_map,
                     x,
                     y,
-                    self.player.e.large_wall_force),
+                    self.player.e.get_prev_estate_id() == STATE_JUMP2),
                 ENTITY_GROUP_EFFECTS
             )
-            self.player.e.just_hit_wall = False
-            self.player.e.large_wall_force = False
 
-        if self.player.e.just_launched:
+        if self.player.e.just_entered_state_id(STATE_JUMP1):
             x, y = self.player.e.get_launch_coords()
             self.add_entity_to_map(Projectile(self.cur_map, x, y), ENTITY_GROUP_PROJECTILES)
-            self.player.e.just_launched = False
 
     def input(self, im):
         if self.im.is_key_event(KEYDOWN, K_UP):
@@ -112,9 +110,6 @@ class ZeroGMapState(EntityMapState):
 
         if self.im.is_key_event(KEYDOWN, K_q):
             self.entity_renderer.draw_hitboxes = not self.entity_renderer.draw_hitboxes
-
-        if self.im.is_key_event(KEYDOWN, K_e):
-            self.player.e.is_active = True
 
         if self.im.is_lmouse_pressed():
             self.player.e.action_launch(self.game.mouse_map_x, self.game.mouse_map_y)

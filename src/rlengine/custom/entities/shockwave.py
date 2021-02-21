@@ -1,9 +1,9 @@
 import time, pygame
 from src.rlengine.game.entities import Effect
 
-SHOCKWAVE_SPEED = 18
-SHOCKWAVE_LIFESPAN_SMALL = 16
-SHOCKWAVE_LIFESPAN_LARGE = 26
+SHOCKWAVE_SPEED = 26
+SHOCKWAVE_LIFESPAN_SMALL = 12
+SHOCKWAVE_LIFESPAN_LARGE = 18
 
 
 class Shockwave(Effect):

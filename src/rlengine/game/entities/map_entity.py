@@ -25,7 +25,7 @@ class MapEntity(Entity):
         self.ai = None
 
     def get_hitbox(self):
-        return self.get_rect()
+        return self.get_circle()
 
     def get_sprites_to_draw(self):
         return [self._generate_base_tile()]
@@ -45,6 +45,10 @@ class MapEntity(Entity):
 
     def get_block_colour(self):
         return self.block_colour
+
+    def get_circle(self):
+        x, y = self.get_xy()
+        return (x+(self.w/2), y+(self.h/2), self.w/2)
 
     def get_rect(self):
         x, y = self.get_xy()

@@ -3,6 +3,60 @@ import pygame
 import src.rlengine.utils.algos.rl_math as rl_math
 from src.rlengine.game.entities import AnimatedMapFloatEntity
 from src.rlengine.config.constants import *
+from src.rlengine.game.entities.entity_states import EMapStatefulMixin, EMapState
+
+STATE_START = 0
+STATE_JUMP1 = 1
+STATE_JUMP2 = 2
+STATE_LAND = 3
+STATE_DIE = 4
+
+
+class HeroStartState(EMapState):
+    def __init__(self):
+        super().__init__()
+
+    def enter_estate(self, e):
+        e.switch_animation_state(0)
+
+
+class HeroJump1State(EMapState):
+    def __init__(self):
+        super().__init__()
+
+    def enter_estate(self, e, dest_x, dest_y):
+        e.switch_animation_state(2, None, 'freeze')
+        x, y = e.get_center_point()
+        e.launch_coord_x = x
+        e.launch_coord_y = y
+        e.launch(dest_x, dest_y, e.first_launch_speed)
+
+
+class HeroJump2State(EMapState):
+    def __init__(self):
+        super().__init__()
+
+    def enter_estate(self, e, dest_x, dest_y):
+        e.launch(dest_x, dest_y, e.second_launch_speed)
+
+
+class HeroLandState(EMapState):
+    def __init__(self):
+        super().__init__()
+
+    def enter_estate(self, e, prev_state_id):
+        e.switch_animation_state(1, 0)
+
+
+class HeroDieState(EMapState):
+    def __init__(self):
+        super().__init__()
+
+    def enter_estate(self, e):
+        e.switch_animation_state(3)
+        e.ddx = 0
+        e.ddy = 0
+
 
 # TODO in animation DATA file
 ANIMATION_FRAMES = [
@@ -31,33 +85,40 @@ ANIMATION_FRAMES = [
         (9, 2, 5),
     ],
     [
-        (0, 3, 5),
-        (1, 3, 5),
-        (2, 3, 5),
-        (3, 3, 5),
-        (4, 3, 5),
-        (5, 3, 5),
-        (6, 3, 5),
-        (7, 3, 5),
+        (0, 3, 2),
+        (1, 3, 2),
+        (2, 3, 2),
+        (3, 3, 2),
+        (4, 3, 2),
+        (5, 3, 2),
+        (6, 3, 2),
+        (7, 3, 2),
         (8, 3, 5),
         (9, 3, 5),
+    ],
+    [
+        (2, 2, 3),
+        (3, 2, 3),
+        (4, 2, 3),
+        (5, 2, 3),
     ],
 ]
 
 
-class Hero(AnimatedMapFloatEntity):
+class Hero(AnimatedMapFloatEntity, EMapStatefulMixin):
     def __init__(self, cur_map, x, y):
+        # TODO is there a better way to do mixin inits??
         AnimatedMapFloatEntity.__init__(self, 0, cur_map, x, y, ANIMATION_FRAMES, {})
+        EMapStatefulMixin.__init__(self)
+
+        self.add_estate(STATE_START, HeroStartState())
+        self.add_estate(STATE_JUMP1, HeroJump1State())
+        self.add_estate(STATE_JUMP2, HeroJump2State())
+        self.add_estate(STATE_LAND, HeroLandState())
+        self.add_estate(STATE_DIE, HeroDieState())
 
         self.first_launch_speed = 8
         self.second_launch_speed = 14
-
-        self.is_first_launched = False
-        self.is_second_launched = False
-        self.just_hit_wall = False
-        self.just_launched = False
-        self.large_wall_force = False
-        self.on_wall = True
 
         self.w = 28
         self.h = 28
@@ -68,7 +129,11 @@ class Hero(AnimatedMapFloatEntity):
         self.launch_coord_x = 0
         self.launch_coord_y = 0
 
-        self.switch_animation_state(2)
+        self.set_estate(STATE_START)
+
+    def take_hit(self):
+        if self.get_cur_estate_id() != STATE_DIE:
+            self.set_estate(STATE_DIE)
 
     def get_sprite_draw_offset_xy(self):
         return (-4, -18)
@@ -80,34 +145,20 @@ class Hero(AnimatedMapFloatEntity):
         super().step(next_x, next_y)
 
     def hit_wall(self, walls_hit):
-        if not self.on_wall:
-            self.switch_animation_state(1, 0)
-            if self.is_second_launched:
-                self.large_wall_force = True
-            self.is_first_launched = False
-            self.is_second_launched = False
-            self.just_hit_wall = True
-            self.on_wall = True
+        if self.get_cur_estate_id() not in [STATE_START, STATE_LAND]:
+            self.set_estate(STATE_LAND, self.get_cur_estate_id())
 
     def get_launch_coords(self):
         return (self.launch_coord_x, self.launch_coord_y)
 
     def action_launch(self, dest_x, dest_y):
-        if not self.is_first_launched:
-            self.switch_animation_state(2, None, 'freeze')
-            x, y = self.get_center_point()
-            self.launch_coord_x = x
-            self.launch_coord_y = y
-            self._launch(dest_x, dest_y, self.first_launch_speed)
-            self.just_launched = True
-            self.is_first_launched = True
-        else:
-            if not self.is_second_launched:
-                self._launch(dest_x, dest_y, self.second_launch_speed)
-                self.is_second_launched = True
+        if self.get_cur_estate != STATE_DIE:
+            if self.get_cur_estate_id() in [STATE_START, STATE_LAND]:
+                self.set_estate(STATE_JUMP1, dest_x, dest_y)
+            elif self.get_cur_estate_id() == STATE_JUMP1:
+                self.set_estate(STATE_JUMP2, dest_x, dest_y)
 
-    def _launch(self, dest_x, dest_y, speed):
-        self.on_wall = False
+    def launch(self, dest_x, dest_y, speed):
         orig_x, orig_y = self.get_center_point()
 
         nx, ny = rl_math.get_normalized_vector(orig_x, orig_y, dest_x, dest_y)
