@@ -1,9 +1,9 @@
 import time, pygame
 from src.rlengine.game.entities import Effect
 
-SHOCKWAVE_SPEED = 16
-SHOCKWAVE_LIFESPAN_SMALL = 20
-SHOCKWAVE_LIFESPAN_LARGE = 30
+SHOCKWAVE_SPEED = 18
+SHOCKWAVE_LIFESPAN_SMALL = 16
+SHOCKWAVE_LIFESPAN_LARGE = 26
 
 
 class Shockwave(Effect):
@@ -11,7 +11,7 @@ class Shockwave(Effect):
         shockwave_lifespan = SHOCKWAVE_LIFESPAN_LARGE if is_large else SHOCKWAVE_LIFESPAN_SMALL
         Effect.__init__(self, 0, cur_map, x, y, shockwave_lifespan, {})
 
-        self.block_colour = (0, 0, 255)
+        self.block_colour = (120, 120, 120)
         self.w = 5
         self.h = 5
         self.ddx = 0

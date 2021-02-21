@@ -66,7 +66,7 @@ GAME_CONFIGS = {
         'system_font_size': 20,
         'system_font_colour': (255, 255, 255),
     },
-    'default_background_colour': (0, 0, 0)
+    'default_background_colour': (16, 16, 16)
 }
 
 GAME_CONFIGS['tile_configs']['min_zoom'] = 0

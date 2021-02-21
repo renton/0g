@@ -6,7 +6,7 @@ from src.rlengine.config import GAME_CONFIGS, SYS_CONFIGS
 class EntityRenderer():
     def __init__(self, rm):
         self.debug_mode = False
-        self.draw_hitboxes = True
+        self.draw_hitboxes = False
         self.rm = rm
 
     def draw_entity_hitbox(self, screen, entity, camera_x, camera_y, zoom_level):
@@ -37,6 +37,9 @@ class EntityRenderer():
         block_colour = entity.get_block_colour()
         sprites_to_draw = entity.get_sprites_to_draw()
         x, y = entity.get_xy()
+        x_offset, y_offset = entity.get_sprite_draw_offset_xy()
+        x += x_offset
+        y += y_offset
         h = entity.h
         w = entity.w
 

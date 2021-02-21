@@ -30,8 +30,8 @@ def shockwave_proj_collision(entity1, entity2):
         orig_x, orig_y = entity1.get_center_point()
         dest_x, dest_y = entity2.get_center_point()
         nx, ny = rl_math.get_normalized_vector(orig_x, orig_y, dest_x, dest_y)
-        entity2.ddx = nx * 4
-        entity2.ddy = ny * 4
+        entity2.ddx = nx * 8
+        entity2.ddy = ny * 8
 
 
 # TODO step override to plant projectiles
@@ -56,12 +56,15 @@ class ZeroGMapState(EntityMapState):
         self._set_camera(START_CAMERA_X, START_CAMERA_Y)
         self.game.bind_player_entity(Hero(defaultmap, 40, 40))
         self.player = self.game.player1
+        self.score = 0
 
         self.add_entity_to_map(self.player.e, ENTITY_GROUP_HERO)
 
     def _step_entities(self):
         EntityMapState._step_entities(self)
         if self.player.e.just_hit_wall:
+            self.score += 1
+            print(self.score)
             x, y = self.player.e.get_xy()
             self.add_entity_to_map(
                 Shockwave(

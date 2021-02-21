@@ -9,11 +9,11 @@ class Projectile(MapFloatEntity):
         MapFloatEntity.__init__(self, 1, cur_map, x, y, {})
         self.x = x
         self.y = y
-        self.w = 6
-        self.h = 6
+        self.w = 10
+        self.h = 10
         self.ddx = 0
         self.ddy = 0
-        self.block_colour = (0, 255, 0)
+        self.block_colour = (255, 255, 20)
         self.block_colour_colliding = (255, 255, 255)
         self.is_colliding = False
 

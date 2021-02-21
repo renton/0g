@@ -15,6 +15,6 @@ class Effect(MapFloatEntity):
         return (True, x, y)
 
     def step(self, next_x, next_y):
-        if self.get_lifespan() > self.effect_lifespan:            
+        if self.get_lifespan() > self.effect_lifespan:
             self.is_active = False
         MapFloatEntity.step(self, next_x, next_y)

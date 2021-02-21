@@ -1,3 +1,8 @@
+- Sprite TransformationsRotation/Flip
+- entity state managment (logic not animation/sprite) (can set the sprite x,y,h,w there? For offsets?)
+- Each Sprite returned from get_sprites_to_draw needs to have it’s own x,y,h,w
+- Circle to circle collision, if hypot is greater than r1+r2
+
 - better rendering (only draw what is in view)
 - colour constants
 - better config/constant naming/hierachy
@@ -5,7 +10,20 @@
 - load map from file
 - reduce imports (can use configs from game instance?)
 - float entity CCD
-- MapEntity should be a mixin, so a custom entity might inherit from Entity and MapEntity
 - Tile/Sprite better organizing
-- animated mixin
-- entity state managment (logic not animation/sprite)
+- MapEntity should be a mixin, so a custom entity might inherit from Entity and MapEntity
+- Animated should be a mixin, so it can be used with grid entity
+- animation data file
+- (Entity always circle to circle)
+- (Entity to tile circle to square)
+
+:RL:
+- los/fog of war
+- movement/effects
+- Skills
+- Minimap
+- Inventory
+- range/LOS/selection
+- delay/cooldown - state logic
+- Turn animations per character
+- Widget: tooltips

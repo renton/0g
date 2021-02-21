@@ -49,8 +49,8 @@ class Hero(AnimatedMapFloatEntity):
     def __init__(self, cur_map, x, y):
         AnimatedMapFloatEntity.__init__(self, 0, cur_map, x, y, ANIMATION_FRAMES, {})
 
-        self.first_launch_speed = 6
-        self.second_launch_speed = 8
+        self.first_launch_speed = 8
+        self.second_launch_speed = 14
 
         self.is_first_launched = False
         self.is_second_launched = False
@@ -59,8 +59,8 @@ class Hero(AnimatedMapFloatEntity):
         self.large_wall_force = False
         self.on_wall = True
 
-        self.w = 38
-        self.h = 57
+        self.w = 28
+        self.h = 28
 
         self.tile_id = 1
         self.tileset_id = 1
@@ -68,7 +68,13 @@ class Hero(AnimatedMapFloatEntity):
         self.launch_coord_x = 0
         self.launch_coord_y = 0
 
-        self.switch_animation_state(0)
+        self.switch_animation_state(2)
+
+    def get_sprite_draw_offset_xy(self):
+        return (-4, -18)
+
+    def get_sprites_to_draw(self):
+        return [self._generate_base_tile()]
 
     def step(self, next_x, next_y):
         super().step(next_x, next_y)

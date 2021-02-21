@@ -37,6 +37,9 @@ class MapEntity(Entity):
         tile_id, tileset_id = self._get_current_sprite()
         return ('sprite', tile_id, tileset_id)
 
+    def get_sprite_draw_offset_xy(self):
+        return (0, 0)
+
     def set_ai(self, ai):
         self.ai = ai
 
