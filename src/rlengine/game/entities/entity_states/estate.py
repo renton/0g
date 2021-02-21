@@ -42,3 +42,6 @@ class EStatefulMixin():
         self.cur_estate_id = estate_id
         self.get_cur_estate().enter_estate(self, *args)
         self.state_enter_step = self.life_steps
+
+    def get_num_estate_steps(self):
+        return self.life_steps - self.state_enter_step

@@ -40,6 +40,10 @@ class MapEntity(Entity):
     def get_sprite_draw_offset_xy(self):
         return (0, 0)
 
+    # TODO this is probably too expensive to peform every frame if we don't need to. can we cache if not changed?
+    def get_sprite_draw_transform(self, sprite):
+        return sprite
+
     def set_ai(self, ai):
         self.ai = ai
 

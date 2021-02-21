@@ -17,3 +17,6 @@ def get_normalized_vector(orig_x, orig_y, dest_x, dest_y):
     else:
         return ((adj/hyp), (opp/hyp))
 
+
+def get_angle_between_line_and_x_axis(orig_x, orig_y, dest_x, dest_y):
+    return math.atan2(dest_y - orig_y, dest_x - orig_x) * 180 / math.pi

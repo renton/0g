@@ -1,12 +1,47 @@
 import pygame
 from src.rlengine.game.entities import MapFloatEntity
 from src.rlengine.config.constants import *
+from src.rlengine.game.entities.entity_states import EMapStatefulMixin, EMapState
+
+STATE_FADING_IN = 0
+STATE_NORMAL = 1
+STATE_SPEEDING_UP = 2
+
+FADE_IN_STEPS = 40
+SPEED_UP_STEPS = 20
 
 
-# TODO better naming of states - better state management?
-class Projectile(MapFloatEntity):
+# TODO colour consts
+class ProjFadeInState(EMapState):
+    def __init__(self):
+        super().__init__()
+
+    def get_estate_block_colour(self, e):
+        return (25, 25, 25)
+
+
+class ProjNormalState(EMapState):
+    def __init__(self):
+        super().__init__()
+
+
+class ProjSpeedingUpState(EMapState):
+    def __init__(self):
+        super().__init__()
+
+    def get_estate_block_colour(self, e):
+        return (255, 255, 255)
+
+
+class Projectile(EMapStatefulMixin, MapFloatEntity):
     def __init__(self, cur_map, x, y):
         MapFloatEntity.__init__(self, 1, cur_map, x, y, {})
+        EMapStatefulMixin.__init__(self)
+
+        self.add_estate(STATE_FADING_IN, ProjFadeInState())
+        self.add_estate(STATE_NORMAL, ProjNormalState())
+        self.add_estate(STATE_SPEEDING_UP, ProjSpeedingUpState())
+
         self.x = x
         self.y = y
         self.w = 10
@@ -14,11 +49,11 @@ class Projectile(MapFloatEntity):
         self.ddx = 0
         self.ddy = 0
         self.block_colour = (255, 255, 20)
-        self.block_colour_colliding = (255, 255, 255)
         self.is_colliding = False
 
-        self.fading_steps = 40
         self.fading_in = True
+
+        self.set_estate(STATE_FADING_IN)
 
     # TODO pass x and y offsets?
     def hit_wall(self, walls_hit):
@@ -34,16 +69,21 @@ class Projectile(MapFloatEntity):
 
     def step(self, next_x, next_y):
         self.is_colliding = False
-        if self.life_steps >= self.fading_steps:
-            self.fading_in = False
+        if (
+            (
+                self.get_cur_estate_id() == STATE_FADING_IN and
+                self.get_num_estate_steps() >= FADE_IN_STEPS
+            ) or
+            (
+                self.get_cur_estate_id() == STATE_SPEEDING_UP and
+                self.get_num_estate_steps() >= SPEED_UP_STEPS
+            )
+        ):
+            self.set_estate(STATE_NORMAL)
 
         MapFloatEntity.step(self, next_x, next_y)
 
-    def get_block_colour(self):
-        if self.fading_in:
-            return (25, 25, 25)
-
-        if self.is_colliding:
-            return self.block_colour_colliding
-        else:
-            return self.block_colour
+    def speed_up(self, new_ddx, new_ddy):        
+        self.ddx = new_ddx
+        self.ddy = new_ddy
+        self.set_estate(STATE_SPEEDING_UP)

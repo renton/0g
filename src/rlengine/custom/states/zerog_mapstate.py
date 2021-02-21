@@ -10,29 +10,33 @@ from src.rlengine.config import GAME_CONFIGS
 from src.rlengine.renderers import MapRenderer
 from src.rlengine.custom.entities import Hero, Projectile, Shockwave
 from src.rlengine.custom.entities.hero import STATE_START, STATE_LAND, STATE_JUMP1, STATE_JUMP2
+from src.rlengine.custom.entities.projectile import STATE_FADING_IN, STATE_NORMAL, STATE_SPEEDING_UP
 
 START_CAMERA_X = -6
 START_CAMERA_Y = -4
+
+HERO_START_X = 400
+HERO_START_Y = 700
 
 ENTITY_GROUP_HERO = 'HERO'
 ENTITY_GROUP_PROJECTILES = 'PROJS'
 ENTITY_GROUP_EFFECTS = 'EFFECTS'
 
 
+# TODO can these call actual instance methods rather than global static?
 def hero_proj_collision(hero, proj):
-    if not proj.fading_in:
-        proj.is_colliding = True
+    if proj.get_cur_estate_id() != STATE_FADING_IN:
         hero.take_hit()
 
 
 def shockwave_proj_collision(wave, proj):
-    if not proj.fading_in:
-        proj.is_colliding = True
+    if proj.get_cur_estate_id() != STATE_FADING_IN:
         orig_x, orig_y = wave.get_center_point()
         dest_x, dest_y = proj.get_center_point()
         nx, ny = rl_math.get_normalized_vector(orig_x, orig_y, dest_x, dest_y)
-        proj.ddx = nx * 8
-        proj.ddy = ny * 8
+
+        # TODO speed based on distance to shockwave center
+        proj.speed_up(nx * 8, ny * 8)
 
 
 # TODO step override to plant projectiles
@@ -55,7 +59,7 @@ class ZeroGMapState(EntityMapState):
         )
 
         self._set_camera(START_CAMERA_X, START_CAMERA_Y)
-        self.game.bind_player_entity(Hero(defaultmap, 40, 40))
+        self.game.bind_player_entity(Hero(defaultmap, HERO_START_X, HERO_START_Y))
         self.player = self.game.player1
         self.score = 0
 

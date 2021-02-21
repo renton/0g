@@ -4,12 +4,17 @@ import src.rlengine.utils.algos.rl_math as rl_math
 from src.rlengine.game.entities import AnimatedMapFloatEntity
 from src.rlengine.config.constants import *
 from src.rlengine.game.entities.entity_states import EMapStatefulMixin, EMapState
+from src.rlengine.config.constants import *
+
 
 STATE_START = 0
 STATE_JUMP1 = 1
 STATE_JUMP2 = 2
 STATE_LAND = 3
 STATE_DIE = 4
+
+FIRST_LAUNCH_SPEED = 8
+SECOND_LAUNCH_SPEED = 14
 
 
 class HeroStartState(EMapState):
@@ -19,33 +24,83 @@ class HeroStartState(EMapState):
     def enter_estate(self, e):
         e.switch_animation_state(0)
 
+    def get_estate_sprite_draw_offset(self, e):
+        return (-4, -18)
+
 
 class HeroJump1State(EMapState):
     def __init__(self):
         super().__init__()
+        self.angle = 0
 
     def enter_estate(self, e, dest_x, dest_y):
         e.switch_animation_state(2, None, 'freeze')
         x, y = e.get_center_point()
         e.launch_coord_x = x
         e.launch_coord_y = y
-        e.launch(dest_x, dest_y, e.first_launch_speed)
+        self.angle = rl_math.get_angle_between_line_and_x_axis(x, y, dest_x, dest_y)
+        e.launch(dest_x, dest_y, FIRST_LAUNCH_SPEED)
+
+    def get_estate_sprite_draw_offset(self, e):
+        return (-8, -18)
+
+    def get_estate_sprite_draw_transform(self, e, sprite):
+        print(self.angle)
+        return pygame.transform.rotate(sprite, (self.angle+90) * -1)
 
 
 class HeroJump2State(EMapState):
     def __init__(self):
         super().__init__()
+        self.angle = 0
 
     def enter_estate(self, e, dest_x, dest_y):
-        e.launch(dest_x, dest_y, e.second_launch_speed)
+        x, y = e.get_xy()
+        self.angle = rl_math.get_angle_between_line_and_x_axis(x, y, dest_x, dest_y)
+        e.launch(dest_x, dest_y, SECOND_LAUNCH_SPEED)
+
+    def get_estate_sprite_draw_offset(self, e):
+        return (-4, -18)
+
+    def get_estate_sprite_draw_transform(self, e, sprite):
+        return pygame.transform.rotate(sprite, (self.angle+90) * -1)
 
 
 class HeroLandState(EMapState):
     def __init__(self):
         super().__init__()
+        self.wall_dir = RL_BOTTOM
 
-    def enter_estate(self, e, prev_state_id):
+    def enter_estate(self, e, prev_state_id, wall_dir):
         e.switch_animation_state(1, 0)
+        self.wall_dir = wall_dir
+
+    def get_estate_sprite_draw_offset(self, e):
+        if e.get_current_a_state_id() == 1:
+            return (-8, -18)
+        elif e.get_current_a_state_id() == 0:
+            return (-4, -18)
+
+    def get_estate_sprite_draw_transform(self, e, sprite):
+        if e.get_current_a_state_id() == 1:
+            if self.wall_dir == RL_TOP:
+                angle = 0
+            elif self.wall_dir == RL_BOTTOM:
+                angle = -180
+            elif self.wall_dir == RL_LEFT:
+                angle = -270
+            elif self.wall_dir == RL_RIGHT:
+                angle = -90
+        elif e.get_current_a_state_id() == 0:
+            if self.wall_dir == RL_TOP:
+                angle = -180
+            elif self.wall_dir == RL_BOTTOM:
+                angle = 0
+            elif self.wall_dir == RL_LEFT:
+                angle = -90
+            elif self.wall_dir == RL_RIGHT:
+                angle = -270
+        return pygame.transform.rotate(sprite, angle)
 
 
 class HeroDieState(EMapState):
@@ -57,8 +112,15 @@ class HeroDieState(EMapState):
         e.ddx = 0
         e.ddy = 0
 
+    def get_estate_sprite_draw_offset(self, e):
+        return (-4, -18)
+
+    def get_estate_sprite_draw_transform(self, e, sprite):
+        return pygame.transform.scale(sprite, (400, 400))
+
 
 # TODO in animation DATA file
+# TODO animation constants
 ANIMATION_FRAMES = [
     [
         (0, 1, 5),
@@ -105,7 +167,7 @@ ANIMATION_FRAMES = [
 ]
 
 
-class Hero(AnimatedMapFloatEntity, EMapStatefulMixin):
+class Hero(EMapStatefulMixin, AnimatedMapFloatEntity):
     def __init__(self, cur_map, x, y):
         # TODO is there a better way to do mixin inits??
         AnimatedMapFloatEntity.__init__(self, 0, cur_map, x, y, ANIMATION_FRAMES, {})
@@ -116,9 +178,6 @@ class Hero(AnimatedMapFloatEntity, EMapStatefulMixin):
         self.add_estate(STATE_JUMP2, HeroJump2State())
         self.add_estate(STATE_LAND, HeroLandState())
         self.add_estate(STATE_DIE, HeroDieState())
-
-        self.first_launch_speed = 8
-        self.second_launch_speed = 14
 
         self.w = 28
         self.h = 28
@@ -135,18 +194,12 @@ class Hero(AnimatedMapFloatEntity, EMapStatefulMixin):
         if self.get_cur_estate_id() != STATE_DIE:
             self.set_estate(STATE_DIE)
 
-    def get_sprite_draw_offset_xy(self):
-        return (-4, -18)
-
-    def get_sprites_to_draw(self):
-        return [self._generate_base_tile()]
-
     def step(self, next_x, next_y):
         super().step(next_x, next_y)
 
     def hit_wall(self, walls_hit):
         if self.get_cur_estate_id() not in [STATE_START, STATE_LAND]:
-            self.set_estate(STATE_LAND, self.get_cur_estate_id())
+            self.set_estate(STATE_LAND, self.get_cur_estate_id(), walls_hit[0])
 
     def get_launch_coords(self):
         return (self.launch_coord_x, self.launch_coord_y)

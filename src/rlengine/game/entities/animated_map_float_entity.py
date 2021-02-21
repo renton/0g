@@ -62,6 +62,9 @@ class AnimatedMapFloatEntity(MapFloatEntity):
     def get_current_a_state(self):
         return self.a_states[self.cur_a_state]
 
+    def get_current_a_state_id(self):
+        return self.cur_a_state
+
     def step(self, next_x, next_y):
         if not self.get_current_a_state().step():
             if self.next_state is None:

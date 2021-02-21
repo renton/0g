@@ -37,6 +37,7 @@ class EntityRenderer():
         sprites_to_draw = entity.get_sprites_to_draw()
         x, y = entity.get_xy()
         x_offset, y_offset = entity.get_sprite_draw_offset_xy()
+
         x += x_offset
         y += y_offset
         h = entity.h
@@ -92,12 +93,15 @@ class EntityRenderer():
                 if sprite[0] == 'sprite':
                     tile_id = sprite[1]
                     tileset_id = sprite[2]
-                    screen.blit(
-                        self.rm.get_tile_by_id(
+                    sprite = self.rm.get_tile_by_id(
                             tileset_id,
                             tile_id,
                             GAME_CONFIGS['tile_configs']['zoom_levels'][zoom_level]
-                        ),
+                    )
+                    sprite = entity.get_sprite_draw_transform(sprite)
+
+                    screen.blit(
+                        sprite,
                         (
                             ex - ecamera_x,
                             ey - ecamera_y,
