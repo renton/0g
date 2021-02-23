@@ -45,7 +45,6 @@ class HeroJump1State(EMapState):
         return (-8, -18)
 
     def get_estate_sprite_draw_transform(self, e, sprite):
-        print(self.angle)
         return pygame.transform.rotate(sprite, (self.angle+90) * -1)
 
 
@@ -113,7 +112,7 @@ class HeroDieState(EMapState):
         e.ddy = 0
 
     def get_estate_sprite_draw_offset(self, e):
-        return (-4, -18)
+        return (-200, -200)
 
     def get_estate_sprite_draw_transform(self, e, sprite):
         return pygame.transform.scale(sprite, (400, 400))
@@ -135,16 +134,16 @@ ANIMATION_FRAMES = [
         (9, 1, 5),
     ],
     [
-        (0, 2, 5),
-        (1, 2, 5),
-        (2, 2, 5),
-        (3, 2, 5),
-        (4, 2, 5),
-        (5, 2, 5),
-        (6, 2, 5),
-        (7, 2, 5),
-        (8, 2, 5),
-        (9, 2, 5),
+        (0, 2, 3),
+        (1, 2, 3),
+        (2, 2, 3),
+        (3, 2, 3),
+        (4, 2, 3),
+        (5, 2, 3),
+        (6, 2, 3),
+        (7, 2, 3),
+        (8, 2, 3),
+        (9, 2, 3),
     ],
     [
         (0, 3, 2),

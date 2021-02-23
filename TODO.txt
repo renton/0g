@@ -17,8 +17,12 @@
 - (Entity to tile circle to square)
 - Tile loading freeze bug?? async loading?
 - label widget bind to a var
+- set alpha
+- widget parameters
 
 :RL:
+- Rlstate extends map entity state. Covers fog of war zinventory, skills, delay etc
+- Rl_animated extends RLstate and adds animations + player movements/etc.
 - los/fog of war
 - movement/effects
 - Skills
@@ -28,3 +32,13 @@
 - delay/cooldown - state logic
 - Turn animations per character
 - Widget: tooltips
+- Hover info state
+- Inventory state (re-draw small surface inside of current state)
+- info state widget
+- hotkey widget
+- pickup/drop items
+- information (potions, wands, tiles uncovered)
+- targetting - los/smite/clear path
+- state turn handling (if delay tie use luck if luck tie random)
+- map generation
+- traps

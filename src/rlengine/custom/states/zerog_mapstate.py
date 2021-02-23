@@ -8,9 +8,11 @@ import src.rlengine.utils.algos.rl_math as rl_math
 from src.rlengine.states import EntityMapState
 from src.rlengine.config import GAME_CONFIGS
 from src.rlengine.renderers import MapRenderer
+from src.rlengine.custom.widgets import UI_ZeroGDebug
 from src.rlengine.custom.entities import Hero, Projectile, Shockwave
 from src.rlengine.custom.entities.hero import STATE_START, STATE_LAND, STATE_JUMP1, STATE_JUMP2
 from src.rlengine.custom.entities.projectile import STATE_FADING_IN, STATE_NORMAL, STATE_SPEEDING_UP
+from src.rlengine.widgets import LabelWidget
 
 START_CAMERA_X = -6
 START_CAMERA_Y = -4
@@ -21,6 +23,9 @@ HERO_START_Y = 700
 ENTITY_GROUP_HERO = 'HERO'
 ENTITY_GROUP_PROJECTILES = 'PROJS'
 ENTITY_GROUP_EFFECTS = 'EFFECTS'
+
+UI_SCORE_X = 10
+UI_SCORE_Y = 10
 
 
 # TODO can these call actual instance methods rather than global static?
@@ -62,8 +67,16 @@ class ZeroGMapState(EntityMapState):
         self.game.bind_player_entity(Hero(defaultmap, HERO_START_X, HERO_START_Y))
         self.player = self.game.player1
         self.score = 0
+        self._init_widgets()
 
         self.add_entity_to_map(self.player.e, ENTITY_GROUP_HERO)
+
+    def _init_widgets(self):
+        self.ui_score = LabelWidget(UI_SCORE_X, UI_SCORE_Y, self.score, None, None, lambda: self.score)
+        self.add_widget(self.ui_score)
+
+        self.ui_debug = UI_ZeroGDebug(self)
+        self.add_widget(self.ui_debug)
 
     def _step_entities(self):
         EntityMapState._step_entities(self)
