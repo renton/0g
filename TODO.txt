@@ -1,5 +1,3 @@
-- Sprite TransformationsRotation/Flip
-- entity state managment (logic not animation/sprite) (can set the sprite x,y,h,w there? For offsets?)
 - Each Sprite returned from get_sprites_to_draw needs to have it’s own x,y,h,w
 
 - better rendering (only draw what is in view)
@@ -16,7 +14,6 @@
 - Entity tile check is still rect->rect (needs to be circle->rect clamping)
 - (Entity to tile circle to square)
 - Tile loading freeze bug?? async loading?
-- label widget bind to a var
 - set alpha
 - widget parameters
 

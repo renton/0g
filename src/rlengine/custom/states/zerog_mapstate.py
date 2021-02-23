@@ -6,7 +6,7 @@ from random import randrange, choice, randint
 
 import src.rlengine.utils.algos.rl_math as rl_math
 from src.rlengine.states import EntityMapState
-from src.rlengine.config import GAME_CONFIGS
+from src.rlengine.config import GAME_CONFIGS, SYS_CONFIGS
 from src.rlengine.renderers import MapRenderer
 from src.rlengine.custom.widgets import UI_ZeroGDebug
 from src.rlengine.custom.entities import Hero, Projectile, Shockwave
@@ -24,8 +24,8 @@ ENTITY_GROUP_HERO = 'HERO'
 ENTITY_GROUP_PROJECTILES = 'PROJS'
 ENTITY_GROUP_EFFECTS = 'EFFECTS'
 
-UI_SCORE_X = 10
-UI_SCORE_Y = 10
+UI_SCORE_X = ( SYS_CONFIGS['window_x_size'] / 2 ) - 50
+UI_SCORE_Y = 30
 
 
 # TODO can these call actual instance methods rather than global static?
@@ -72,7 +72,7 @@ class ZeroGMapState(EntityMapState):
         self.add_entity_to_map(self.player.e, ENTITY_GROUP_HERO)
 
     def _init_widgets(self):
-        self.ui_score = LabelWidget(UI_SCORE_X, UI_SCORE_Y, self.score, None, None, lambda: self.score)
+        self.ui_score = LabelWidget(UI_SCORE_X, UI_SCORE_Y, self.score, None, None, lambda: "{:02d}".format(self.score))
         self.add_widget(self.ui_score)
 
         self.ui_debug = UI_ZeroGDebug(self)

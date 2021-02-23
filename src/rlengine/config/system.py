@@ -61,6 +61,7 @@ GAME_CONFIGS = {
         'system_fonts': {
             0: ('DejaVuSans.ttf', 20),
             1: ('DejaVuSans.ttf', 18),
+            2: ('eight2empire.ttf', 64),
         },
         'system_font_default': 0,
         'system_font_size': 20,
@@ -76,10 +77,10 @@ GAME_CONFIGS['map_configs']['map_window_size_x'] = SYS_CONFIGS['window_x_size'] 
 GAME_CONFIGS['map_configs']['map_window_size_y'] = SYS_CONFIGS['window_y_size'] // GAME_CONFIGS['tile_configs']['tile_size']
 
 WIDGET_CONFIGS = {
-    'widget_list_line_spacing': 40,
-    'widget_default_menu_line_spacing': 40,
+    'widget_list_line_spacing': 20,
+    'widget_default_menu_line_spacing': 60,
     'widget_default_menu_bg_colour': (40, 40, 40),
-    'widget_default_menu_font': 0,
+    'widget_default_menu_font': 2,
     'widget_default_menu_font_colour': (255, 255, 255)
 }
 
