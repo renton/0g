@@ -36,19 +36,29 @@ class EntityMapState(MapState):
 
                     # hit wall
                     else:
-                        # CCD TODO
-                        # TODO if direction > tile size then check for hits in between
-                        # TODO hit_wall should send the direction hit
-                        # if entity.ddx + entity.ddy > 0:
-                        #     ddx_test = entity.ddx / (entity.ddx + entity.ddy)
-                        #     ddy_test = entity.ddy / (entity.ddx + entity.ddy)
-                        #     x_test, y_text = entity.get_xy()
-
-
-                        # TODO make x,y equal vectors of length 1 then check each step
-                        # TODO get as close as you can for CCD
+                        # TODO CCD if direction > tile size then check for hits in between
                         new_x, new_y = entity.get_xy()
-                        # TODO bool for top,left,down right?
+                        if abs(entity.ddx) + abs(entity.ddy) > 0:
+                            total_dd = abs(entity.ddx) + abs(entity.ddy)
+                            ddx_incr_test = entity.ddx / total_dd
+                            ddy_incr_test = entity.ddy / total_dd
+
+                            # TODO don't have infinite loop here
+                            # get as close as you can to wall
+                            while True:
+                                walls_hit = self.can_entity_move(
+                                    new_x + ddx_incr_test,
+                                    new_y + ddy_incr_test,
+                                    entity.w,
+                                    entity.h
+                                )
+                                if len(walls_hit) > 0:
+                                    break
+                                else:
+                                    new_x += ddx_incr_test
+                                    new_y += ddy_incr_test
+
+                        # TODO sometimes entities need to clear ddx/ddy after hit
                         entity.hit_wall(walls_hit)
                 else:
                     new_x, new_y = entity.get_xy()

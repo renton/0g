@@ -73,10 +73,12 @@ class HeroLandState(EMapState):
     def enter_estate(self, e, prev_state_id, wall_dir):
         e.switch_animation_state(1, 0)
         self.wall_dir = wall_dir
+        e.ddx = 0
+        e.ddy = 0
 
     def get_estate_sprite_draw_offset(self, e):
         if e.get_current_a_state_id() == 1:
-            return (-8, -18)
+            return (-8, -44)
         elif e.get_current_a_state_id() == 0:
             return (-4, -18)
 

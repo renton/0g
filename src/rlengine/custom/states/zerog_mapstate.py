@@ -31,7 +31,8 @@ UI_SCORE_Y = 30
 # TODO can these call actual instance methods rather than global static?
 def hero_proj_collision(hero, proj):
     if proj.get_cur_estate_id() != STATE_FADING_IN:
-        hero.take_hit()
+        # hero.take_hit()
+        pass
 
 
 def shockwave_proj_collision(wave, proj):
@@ -100,19 +101,19 @@ class ZeroGMapState(EntityMapState):
     def input(self, im):
         if self.im.is_key_event(KEYDOWN, K_UP):
             # self.player.e.move_tile_y = -1
-            self.player.e.set_ddy(-0.6)
+            self.player.e.set_ddy(-4)
             self.player.e.set_ddx(0)
         if self.im.is_key_event(KEYDOWN, K_DOWN):
             # self.player.e.move_tile_y = 1
-            self.player.e.set_ddy(0.6)
+            self.player.e.set_ddy(4)
             self.player.e.set_ddx(0)
         if self.im.is_key_event(KEYDOWN, K_LEFT):
             # self.player.e.move_tile_x = -1
-            self.player.e.set_ddx(-0.6)
+            self.player.e.set_ddx(-4)
             self.player.e.set_ddy(0)
         if self.im.is_key_event(KEYDOWN, K_RIGHT):
             # self.player.e.move_tile_x = 1
-            self.player.e.set_ddx(0.6)
+            self.player.e.set_ddx(4)
             self.player.e.set_ddy(0)
 
         if self.im.is_key_event(KEYDOWN, K_o):
