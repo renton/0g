@@ -44,6 +44,7 @@ class EntityMapState(MapState):
                             ddy_incr_test = entity.ddy / total_dd
 
                             # TODO don't have infinite loop here
+                            # TODO probably better to just figure out the tile(s) you hit then get coordinates
                             # get as close as you can to wall
                             while True:
                                 walls_hit = self.can_entity_move(

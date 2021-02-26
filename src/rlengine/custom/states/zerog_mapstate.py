@@ -10,9 +10,10 @@ from src.rlengine.config import GAME_CONFIGS, SYS_CONFIGS
 from src.rlengine.renderers import MapRenderer
 from src.rlengine.custom.widgets import UI_ZeroGDebug
 from src.rlengine.custom.entities import Hero, Projectile, Shockwave
-from src.rlengine.custom.entities.hero import STATE_START, STATE_LAND, STATE_JUMP1, STATE_JUMP2
+from src.rlengine.custom.entities.hero import STATE_START, STATE_LAND, STATE_JUMP1, STATE_JUMP2, STATE_DIE
 from src.rlengine.custom.entities.projectile import STATE_FADING_IN, STATE_NORMAL, STATE_SPEEDING_UP
 from src.rlengine.widgets import LabelWidget
+from src.data import MUSIC_DATA, SOUND_DATA
 
 START_CAMERA_X = -6
 START_CAMERA_Y = -4
@@ -31,12 +32,11 @@ UI_SCORE_Y = 30
 # TODO can these call actual instance methods rather than global static?
 def hero_proj_collision(hero, proj):
     if proj.get_cur_estate_id() != STATE_FADING_IN:
-        # hero.take_hit()
-        pass
+        hero.take_hit()
 
 
 def shockwave_proj_collision(wave, proj):
-    if proj.get_cur_estate_id() != STATE_FADING_IN:
+    if proj.get_cur_estate_id() not in [STATE_FADING_IN, STATE_SPEEDING_UP]:
         orig_x, orig_y = wave.get_center_point()
         dest_x, dest_y = proj.get_center_point()
         nx, ny = rl_math.get_normalized_vector(orig_x, orig_y, dest_x, dest_y)
@@ -64,6 +64,9 @@ class ZeroGMapState(EntityMapState):
             shockwave_proj_collision,
         )
 
+        self.game.am.load_musics(MUSIC_DATA)
+        self.game.am.load_sounds(SOUND_DATA)
+        self.game.am.start_music('dynacare')
         self._set_camera(START_CAMERA_X, START_CAMERA_Y)
         self.game.bind_player_entity(Hero(defaultmap, HERO_START_X, HERO_START_Y))
         self.player = self.game.player1
@@ -82,6 +85,7 @@ class ZeroGMapState(EntityMapState):
     def _step_entities(self):
         EntityMapState._step_entities(self)
         if self.player.e.just_entered_state_id(STATE_LAND):
+            self.game.am.play_sound('land')
             self.score += 1
             print('score: ', self.score)
             x, y = self.player.e.get_xy()
@@ -94,7 +98,14 @@ class ZeroGMapState(EntityMapState):
                 ENTITY_GROUP_EFFECTS
             )
 
+        if self.player.e.just_entered_state_id(STATE_DIE):
+            self.game.am.play_sound('hit')
+
+        if self.player.e.just_entered_state_id(STATE_JUMP2):
+            self.game.am.play_sound('jump2')
+
         if self.player.e.just_entered_state_id(STATE_JUMP1):
+            self.game.am.play_sound('jump')
             x, y = self.player.e.get_launch_coords()
             self.add_entity_to_map(Projectile(self.cur_map, x, y), ENTITY_GROUP_PROJECTILES)
 
@@ -128,6 +139,7 @@ class ZeroGMapState(EntityMapState):
 
         if self.im.is_key_event(KEYDOWN, K_q):
             self.entity_renderer.draw_hitboxes = not self.entity_renderer.draw_hitboxes
+            self.game.am.stop_music()
 
         if self.im.is_lmouse_pressed():
             self.player.e.action_launch(self.game.mouse_map_x, self.game.mouse_map_y)

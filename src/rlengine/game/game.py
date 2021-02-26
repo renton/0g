@@ -30,6 +30,7 @@ class Game():
     def _init_utils(self):
         self.rm = self.rl_config['klass_resource_manager']()
         self.im = self.rl_config['klass_input_manager']()
+        self.am = self.rl_config['klass_audio_manager']()
         self.log = None
 
     def _init_time(self):
