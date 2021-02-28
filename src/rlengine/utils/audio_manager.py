@@ -12,6 +12,9 @@ class AudioManager():
         self.sfx_volume = 100
         self.mfx_volume = 100
 
+        self.mfx_enabled = True
+        self.sfx_enabled = True
+
     def load_sounds(self, sound_data):
         for k, v in sound_data.items():
             self.load_sound(k, v)
@@ -27,7 +30,7 @@ class AudioManager():
         self.sfx[id] = pygame.mixer.Sound(filename)
 
     def start_music(self, id, loops=-1, start=0, fade_ms=0):
-        if self.cur_music is None and id in self.mfx:
+        if self.cur_music is None and id in self.mfx and self.mfx_enabled:
             self.cur_music = id
             pygame.mixer.music.load(self.mfx[id])
             pygame.mixer.music.play(loops, start, fade_ms)
@@ -49,5 +52,5 @@ class AudioManager():
         pass
 
     def play_sound(self, id):
-        if id in self.sfx:
+        if id in self.sfx and self.sfx_enabled:
             self.sfx[id].play()

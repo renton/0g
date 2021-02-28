@@ -16,6 +16,23 @@
 - Tile loading freeze bug?? async loading?
 - set alpha
 - widget parameters
+- CCD - keep trying one step until you hit.
+    - Step by 1 until first hit
+    - What about fast moving? Need to figure out ‘where’ it would be after step
+    - Get tile at collision point then figure out its x+y
+- Animation offsets - how to test + get right?
+- Turn off set smooth
+- Title screen - credit screen
+- fading/trails/ghost
+- Tile colour changing?
+- Bullet shockwave mechanics
+- Debug screen on/off
+- Pygame - separate map + camera (zoom?)
+- Options screen:
+    - Sound volume
+    - Music volume
+- Output to binary
+
 
 :RL:
 - Rlstate extends map entity state. Covers fog of war zinventory, skills, delay etc
@@ -39,3 +56,8 @@
 - state turn handling (if delay tie use luck if luck tie random)
 - map generation
 - traps
+7drl:
+Pits, boulder trap, doors
+One character
+Multiple items
+One biome

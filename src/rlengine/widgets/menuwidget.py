@@ -8,6 +8,11 @@ class MenuWidget(Widget):
         self.menu_items = []
         self.cur_target = 0
 
+    def add_option_item(self, option_widget):
+        option_widget.x = self.x
+        option_widget.y = self.y + (WIDGET_CONFIGS['widget_default_menu_line_spacing'] * len(self.menu_items))
+        self.menu_items.append(option_widget)
+
     def add_menu_item(self, label, select_event=None):
         self.menu_items.append(MenuItemWidget(self.x, self.y + (WIDGET_CONFIGS['widget_default_menu_line_spacing'] * len(self.menu_items)), label, select_event))
 
