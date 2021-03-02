@@ -78,7 +78,7 @@ GAME_CONFIGS['map_configs']['map_window_size_y'] = SYS_CONFIGS['window_y_size'] 
 
 WIDGET_CONFIGS = {
     'widget_list_line_spacing': 20,
-    'widget_default_menu_line_spacing': 60,
+    'widget_default_menu_line_spacing': 80,
     'widget_default_menu_bg_colour': (40, 40, 40),
     'widget_default_menu_font': 2,
     'widget_default_menu_font_colour': (255, 255, 255)

@@ -9,6 +9,7 @@ class ListWidget(Widget):
     def __init__(self, x, y, select_event=None, update_fn=None):
         Widget.__init__(self, x, y, select_event)
         self.data = []
+        self.is_hidden = False
 
     def add_data(self, update_fn):
         self.data.append(update_fn)
@@ -17,12 +18,13 @@ class ListWidget(Widget):
         self.data = []
 
     def draw(self, screen, rm):
-        count = 0
-        for v in self.data:
-            text = rm.get_font(GAME_CONFIGS['font_configs']['system_font_default']).render(str(v()), 1, GAME_CONFIGS['font_configs']['system_font_colour'])
-            screen.blit(text, (
-                                        self.x,
-                                        self.y + (WIDGET_CONFIGS['widget_list_line_spacing'] * count),
-                                    )
-                            )
-            count += 1
+        if not self.is_hidden:
+            count = 0
+            for v in self.data:
+                text = rm.get_font(GAME_CONFIGS['font_configs']['system_font_default']).render(str(v()), 1, GAME_CONFIGS['font_configs']['system_font_colour'])
+                screen.blit(text, (
+                                            self.x,
+                                            self.y + (WIDGET_CONFIGS['widget_list_line_spacing'] * count),
+                                        )
+                                )
+                count += 1

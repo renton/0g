@@ -1,5 +1,8 @@
 import pygame
 
+DEFAULT_VOLUME_SOUND = 1.0
+DEFAULT_VOLUME_MUSIC = 1.0
+
 
 # TODO channel management?
 class AudioManager():
@@ -8,12 +11,18 @@ class AudioManager():
         self.mfx = {}
         self.cur_music = None
 
-        # TODO volume controls
-        self.sfx_volume = 100
-        self.mfx_volume = 100
-
         self.mfx_enabled = True
         self.sfx_enabled = True
+
+        self.adjust_sfx_volume(DEFAULT_VOLUME_SOUND)
+        self.adjust_mfx_volume(DEFAULT_VOLUME_MUSIC)
+
+    def adjust_sfx_volume(self, new_vol):
+        self.sfx_volume = new_vol
+
+    def adjust_mfx_volume(self, new_vol):
+        self.mfx_volume = new_vol
+        pygame.mixer.music.set_volume(self.mfx_volume)
 
     def load_sounds(self, sound_data):
         for k, v in sound_data.items():
@@ -53,4 +62,6 @@ class AudioManager():
 
     def play_sound(self, id):
         if id in self.sfx and self.sfx_enabled:
+            if self.sfx[id].get_volume() != self.sfx_volume:
+                self.sfx[id].set_volume(self.sfx_volume)
             self.sfx[id].play()

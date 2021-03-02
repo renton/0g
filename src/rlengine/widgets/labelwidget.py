@@ -7,6 +7,7 @@ class LabelWidget(Widget):
         Widget.__init__(self, x, y, select_event, hover_event)
         self.label = label
         self.label_fn = label_fn
+        self.is_hidden = False
 
     def update_label(self):
         if self.label_fn:
@@ -14,16 +15,17 @@ class LabelWidget(Widget):
         return self.label
 
     def draw(self, screen, rm):
-        label = self.update_label()
-        text = rm.get_font(WIDGET_CONFIGS['widget_default_menu_font']).render(
-            str(label),
-            1,
-            WIDGET_CONFIGS['widget_default_menu_font_colour']
-        )
-        screen.blit(
-            text,
-            (
-                self.x,
-                self.y
+        if not self.is_hidden:
+            label = self.update_label()
+            text = rm.get_font(WIDGET_CONFIGS['widget_default_menu_font']).render(
+                str(label),
+                1,
+                WIDGET_CONFIGS['widget_default_menu_font_colour']
             )
-        )
+            screen.blit(
+                text,
+                (
+                    self.x,
+                    self.y
+                )
+            )

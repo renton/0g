@@ -20,6 +20,7 @@ class MapState(State):
         self._set_camera(0, 0)
         self.zoom_level = 0
         self.fixed_camera = True
+        self.camera_locked = False
         self.camera_target = None
         self._set_map_renderer()
         self.set_map(defaultmap)
@@ -99,82 +100,83 @@ class MapState(State):
 
         self._set_mouse_map_coords()
 
-        # TODO camera should be able to pan to blackness at any zoom level
-        if self.im.is_key_event(KEYDOWN, K_w) or keystate[K_w]:
-            self._set_camera(self.camera_tile_x, self.camera_tile_y - 1)
-            self._force_draw()
-        if self.im.is_key_event(KEYDOWN, K_d) or keystate[K_d]:
-            self._set_camera(self.camera_tile_x + 1, self.camera_tile_y)
-            self._force_draw()
-        if self.im.is_key_event(KEYDOWN, K_s) or keystate[K_s]:
-            self._set_camera(self.camera_tile_x, self.camera_tile_y + 1)
-            self._force_draw()
-        if self.im.is_key_event(KEYDOWN, K_a) or keystate[K_a]:
-            self._set_camera(self.camera_tile_x - 1, self.camera_tile_y)
-            self._force_draw()
-
-        # if self.im.is_key_event(KEYDOWN, K_UP) or keystate[K_UP]:
-        #     self.p1.e.delta_dir = 0
-        # if self.im.is_key_event(KEYDOWN, K_DOWN) or keystate[K_DOWN]:
-        #     self.p1.e.delta_dir = 2
-        # if self.im.is_key_event(KEYDOWN, K_LEFT) or keystate[K_LEFT]:
-        #     self.p1.e.delta_dir = 3
-        # if self.im.is_key_event(KEYDOWN, K_RIGHT) or keystate[K_RIGHT]:
-        #     self.p1.e.delta_dir = 1
-
-        # if self.im.is_key_event(KEYDOWN, K_v):
-        #     self.fixed_camera = not self.fixed_camera
-        #     self.log.add_log("camera: " + ("fixed" if self.fixed_camera else "follow")) 
-        #     self._force_draw()
-
-        if self.im.is_key_event(KEYDOWN, K_z):
-            if self.zoom_level > GAME_CONFIGS['tile_configs']['min_zoom']:
-                self.zoom_level -= 1
+        if not self.camera_locked:
+            # TODO camera should be able to pan to blackness at any zoom level
+            if self.im.is_key_event(KEYDOWN, K_w) or keystate[K_w]:
+                self._set_camera(self.camera_tile_x, self.camera_tile_y - 1)
                 self._force_draw()
-        if self.im.is_key_event(KEYDOWN, K_x):
-            if self.zoom_level < GAME_CONFIGS['tile_configs']['max_zoom']:
-                self.zoom_level += 1
+            if self.im.is_key_event(KEYDOWN, K_d) or keystate[K_d]:
+                self._set_camera(self.camera_tile_x + 1, self.camera_tile_y)
                 self._force_draw()
-        # if self.im.is_key_event(KEYDOWN, K_c):
-        #     self.p1.bind_entity(self.test1)
-        #     self.fixed_camera = False
-        #     self.set_camera_to_entity(self.p1.e)
-        #     self._force_draw()
-        # if self.im.is_key_event(KEYDOWN, K_n):
-        #     self.p1.unbind_entity()
-        #     self._force_draw()
-        # if self.im.is_key_event(KEYDOWN, K_p):
-        #     self.p1.e.increment_length(1)
-        #     self._force_draw()
-        # if self.im.is_key_event(KEYDOWN, K_o):
-        #     self.p1.e.increment_length(-1)
-        #     self._force_draw()
-        '''
-        if self.im.is_key_event(KEYDOWN, K_g):
-            # successfully picked up
-            (pickedup, dropped) = self.p1.e.pickup(self.cur_map.tiles[self.p1.e.x][self.p1.e.y])
-            for item in pickedup: 
-                self.remove_entity_from_map(item)
-            for item in dropped:
-                self.add_entity_to_map(item, self.p1.e.x, self.p1.e.y)
-            self._force_draw()
-        '''
-        # if self.im.is_key_event(KEYDOWN, K_e):
-        #     self.toggle_expanded_logs()
-        #     self._force_draw()
+            if self.im.is_key_event(KEYDOWN, K_s) or keystate[K_s]:
+                self._set_camera(self.camera_tile_x, self.camera_tile_y + 1)
+                self._force_draw()
+            if self.im.is_key_event(KEYDOWN, K_a) or keystate[K_a]:
+                self._set_camera(self.camera_tile_x - 1, self.camera_tile_y)
+                self._force_draw()
 
-        '''
-        if self.im.is_key_event(KEYDOWN, K_i):
-            if self.p1.e:
-                self.i_state.set_entity(self.p1.e)
-                pygame.event.post(pygame.event.Event(CONFIG['EVENT_CUSTOM_SWITCH_STATE'], loadstate = self.i_state))
-        if self.im.is_key_event(KEYDOWN, K_g):
-            if self.p1.e:
-                items = self.p1.e.pickup_all(self.get_player_current_tile())
-                for item in items:
+            # if self.im.is_key_event(KEYDOWN, K_UP) or keystate[K_UP]:
+            #     self.p1.e.delta_dir = 0
+            # if self.im.is_key_event(KEYDOWN, K_DOWN) or keystate[K_DOWN]:
+            #     self.p1.e.delta_dir = 2
+            # if self.im.is_key_event(KEYDOWN, K_LEFT) or keystate[K_LEFT]:
+            #     self.p1.e.delta_dir = 3
+            # if self.im.is_key_event(KEYDOWN, K_RIGHT) or keystate[K_RIGHT]:
+            #     self.p1.e.delta_dir = 1
+
+            # if self.im.is_key_event(KEYDOWN, K_v):
+            #     self.fixed_camera = not self.fixed_camera
+            #     self.log.add_log("camera: " + ("fixed" if self.fixed_camera else "follow")) 
+            #     self._force_draw()
+
+            if self.im.is_key_event(KEYDOWN, K_z):
+                if self.zoom_level > GAME_CONFIGS['tile_configs']['min_zoom']:
+                    self.zoom_level -= 1
+                    self._force_draw()
+            if self.im.is_key_event(KEYDOWN, K_x):
+                if self.zoom_level < GAME_CONFIGS['tile_configs']['max_zoom']:
+                    self.zoom_level += 1
+                    self._force_draw()
+            # if self.im.is_key_event(KEYDOWN, K_c):
+            #     self.p1.bind_entity(self.test1)
+            #     self.fixed_camera = False
+            #     self.set_camera_to_entity(self.p1.e)
+            #     self._force_draw()
+            # if self.im.is_key_event(KEYDOWN, K_n):
+            #     self.p1.unbind_entity()
+            #     self._force_draw()
+            # if self.im.is_key_event(KEYDOWN, K_p):
+            #     self.p1.e.increment_length(1)
+            #     self._force_draw()
+            # if self.im.is_key_event(KEYDOWN, K_o):
+            #     self.p1.e.increment_length(-1)
+            #     self._force_draw()
+            '''
+            if self.im.is_key_event(KEYDOWN, K_g):
+                # successfully picked up
+                (pickedup, dropped) = self.p1.e.pickup(self.cur_map.tiles[self.p1.e.x][self.p1.e.y])
+                for item in pickedup: 
                     self.remove_entity_from_map(item)
+                for item in dropped:
+                    self.add_entity_to_map(item, self.p1.e.x, self.p1.e.y)
                 self._force_draw()
-        '''
+            '''
+            # if self.im.is_key_event(KEYDOWN, K_e):
+            #     self.toggle_expanded_logs()
+            #     self._force_draw()
+
+            '''
+            if self.im.is_key_event(KEYDOWN, K_i):
+                if self.p1.e:
+                    self.i_state.set_entity(self.p1.e)
+                    pygame.event.post(pygame.event.Event(CONFIG['EVENT_CUSTOM_SWITCH_STATE'], loadstate = self.i_state))
+            if self.im.is_key_event(KEYDOWN, K_g):
+                if self.p1.e:
+                    items = self.p1.e.pickup_all(self.get_player_current_tile())
+                    for item in items:
+                        self.remove_entity_from_map(item)
+                    self._force_draw()
+            '''
 
         State.input(self, self.im)
 

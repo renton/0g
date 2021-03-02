@@ -9,6 +9,10 @@ class EntityManager():
         self.z_index_groups = defaultdict(list)
         self.step_order_groups = defaultdict(list)
 
+    def empty_entities(self):
+        for k, v in self.entity_groups.items():
+            self.entity_groups[k] = []
+
     def add_entity_group(self, group_id, z_index=0, step_order=0):
         self.entity_groups[group_id] = []
         self.z_index_groups[z_index].append(group_id)
