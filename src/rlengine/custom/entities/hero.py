@@ -13,6 +13,11 @@ STATE_JUMP2 = 2
 STATE_LAND = 3
 STATE_DIE = 4
 
+ASTATE_STAND = 0
+ASTATE_LAND = 1
+ASTATE_JUMP = 2
+ASTATE_DEATH = 3
+
 FIRST_LAUNCH_SPEED = 10
 SECOND_LAUNCH_SPEED = 16
 
@@ -77,13 +82,27 @@ class HeroLandState(EMapState):
         e.ddy = 0
 
     def get_estate_sprite_draw_offset(self, e):
-        if e.get_current_a_state_id() == 1:
-            return (-8, -44)
-        elif e.get_current_a_state_id() == 0:
-            return (-4, -18)
+        if e.get_current_a_state_id() == ASTATE_LAND:
+            if self.wall_dir == RL_TOP:
+                return (-18, -22)
+            elif self.wall_dir == RL_BOTTOM:
+                return (-8, -44)
+            elif self.wall_dir == RL_LEFT:
+                return (-14, -6)
+            elif self.wall_dir == RL_RIGHT:
+                return (-41, -20)       
+        elif e.get_current_a_state_id() == ASTATE_STAND:
+            if self.wall_dir == RL_TOP:
+                return (-4, -18)
+            elif self.wall_dir == RL_BOTTOM:
+                return (-4, -18)
+            elif self.wall_dir == RL_LEFT:
+                return (-12, -2)
+            elif self.wall_dir == RL_RIGHT:
+                return (-14, -4)  
 
     def get_estate_sprite_draw_transform(self, e, sprite):
-        if e.get_current_a_state_id() == 1:
+        if e.get_current_a_state_id() == ASTATE_LAND:
             if self.wall_dir == RL_TOP:
                 angle = 0
             elif self.wall_dir == RL_BOTTOM:
@@ -92,7 +111,7 @@ class HeroLandState(EMapState):
                 angle = -270
             elif self.wall_dir == RL_RIGHT:
                 angle = -90
-        elif e.get_current_a_state_id() == 0:
+        elif e.get_current_a_state_id() == ASTATE_STAND:
             if self.wall_dir == RL_TOP:
                 angle = -180
             elif self.wall_dir == RL_BOTTOM:
@@ -123,6 +142,7 @@ class HeroDieState(EMapState):
 # TODO in animation DATA file
 # TODO animation constants
 ANIMATION_FRAMES = [
+    # stand animation
     [
         (0, 1, 5),
         (1, 1, 5),
@@ -135,6 +155,7 @@ ANIMATION_FRAMES = [
         (8, 1, 5),
         (9, 1, 5),
     ],
+    # landing animation
     [
         (0, 2, 3),
         (1, 2, 3),
@@ -147,6 +168,7 @@ ANIMATION_FRAMES = [
         (8, 2, 3),
         (9, 2, 3),
     ],
+    # jumping animation
     [
         (0, 3, 2),
         (1, 3, 2),
@@ -159,6 +181,7 @@ ANIMATION_FRAMES = [
         (8, 3, 5),
         (9, 3, 5),
     ],
+    # death animation
     [
         (2, 2, 3),
         (3, 2, 3),
@@ -183,6 +206,7 @@ class Hero(EMapStatefulMixin, AnimatedMapFloatEntity):
         self.w = 28
         self.h = 28
 
+        self.block_colour = (0, 255, 0)
         self.tile_id = 1
         self.tileset_id = 1
 

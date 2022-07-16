@@ -18,3 +18,6 @@ class UI_ZeroGDebug(ListWidget):
         self.add_data(lambda: 'my :' + str(self.mapstate.game.mouse_map_y))
         self.add_data(lambda: 'sfx :' + str(self.mapstate.game.am.sfx_volume))
         self.add_data(lambda: 'mfx :' + str(self.mapstate.game.am.mfx_volume))
+        
+        self.add_data(lambda: 'off_x :' + str(self.mapstate.player.e.get_cur_estate().get_estate_sprite_draw_offset(self.mapstate.player.e)[0]))
+        self.add_data(lambda: 'off_y :' + str(self.mapstate.player.e.get_cur_estate().get_estate_sprite_draw_offset(self.mapstate.player.e)[1]))

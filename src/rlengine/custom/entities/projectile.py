@@ -83,7 +83,7 @@ class Projectile(EMapStatefulMixin, MapFloatEntity):
 
         MapFloatEntity.step(self, next_x, next_y)
 
-    def speed_up(self, new_ddx, new_ddy):        
+    def speed_up(self, new_ddx, new_ddy):       
         self.ddx = new_ddx
         self.ddy = new_ddy
         self.set_estate(STATE_SPEEDING_UP)
