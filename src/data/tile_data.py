@@ -1,13 +1,6 @@
 TILE_DATA = {}
 
 TILE_DATA['tilesets'] = {
-        0: {
-                'name': '',
-                'filename': 'DungeonCrawl_ProjectUtumnoTileset.png',
-                'colorkey': (0, 0, 0),
-                'tile_width': 32,
-                'tile_height': 32,
-            },
         1: {
                 'name': 'Robo Static',
                 'filename': 'RoboStatic.png',

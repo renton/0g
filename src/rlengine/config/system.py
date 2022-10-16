@@ -25,13 +25,6 @@ GAME_CONFIGS = {
         'zoom_levels': (1, 2, 4),
         'tile_size': 32,
         'tilesets': {
-            0: {
-                'name': '',
-                'filename': 'DungeonCrawl_ProjectUtumnoTileset.png',
-                'colorkey': (0, 0, 0),
-                'tile_width': 32,
-                'tile_height': 32,
-            },
             1: {
                 'name': '',
                 'filename': 'RoboStatic.png',
@@ -59,11 +52,9 @@ GAME_CONFIGS = {
     'font_configs': {
         'font_path': 'assets/fonts/',
         'system_fonts': {
-            0: ('DejaVuSans.ttf', 20),
-            1: ('DejaVuSans.ttf', 18),
             2: ('eight2empire.ttf', 64),
         },
-        'system_font_default': 0,
+        'system_font_default': 2,
         'system_font_size': 20,
         'system_font_colour': (255, 255, 255),
     },
