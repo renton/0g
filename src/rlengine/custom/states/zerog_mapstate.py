@@ -152,7 +152,7 @@ class ZeroGMapState(EntityMapState):
                 if self.player.e.get_cur_estate_id() == STATE_JUMP1:
                     self.game.am.play_sound('jump')
                     x, y = self.player.e.get_launch_coords()
-                    #self.add_entity_to_map(Projectile(self.cur_map, x, y), ENTITY_GROUP_PROJECTILES)
+                    self.add_entity_to_map(Projectile(self.cur_map, x, y), ENTITY_GROUP_PROJECTILES)
 
         EntityMapState.input(self, im)
 
